@@ -1,35 +1,35 @@
 <?
-$AKHZ = @@AKHZ;
-$ALARM = @@ALARM;
-$APP_UID = @@APP_UID; 
-$DASTGAHEJRAI = @@DASTGAHEJRAI;
-$DEADLINE_ASNAD = @@DEADLINE_ASNAD;
-$DEADLINE_PASOKH = @@DEADLINE_PASOKH;
-$MABLAGH = @@MABLAGH;
-$MOZAYEDE_SHOMARE = @@MOZAYEDE_SHOMARE;
-$NAHVE_SHERKAT = @@NAHVE_SHERKAT;
-$NAME = @@NAME;
-$TAHVIL_BAR = @@TAHVIL_BAR;
-$TYPE = @@TYPE;
-$ZEMANAT_NAMEH = @@ZEMANAT_NAMEH;
-$ZEMANAT_NAMEH_2 = @@ZEMANAT_NAMEH_2;
+$akhz = @@akhz;
+$alarm = @@alarm;
+$app_uid = uniqid();
+$dastgahejrai = @@dastgahejrai;
+$deadline_asnad = @@deadline_asnad;
+$deadline_pasokh = @@deadline_pasokh;
+$mablagh = @@mablagh;
+$mozayede_shomare = @@mozayede_shomare;
+$nahve_sherkat = @@nahve_sherkat;
+$name = @@name;
+$tahvil_bar = @@tahvil_bar;
+$type = @@type;
+$zemanat_nameh = @@zemanat_nameh;
+$zemanat_nameh_2 = @@zemanat_nameh_2;
 
 // Insert the feedback into the database using APP_UID as the identifier
-$insert_query = "INSERT INTO PRC_DB_MOZAYEDAT_MONAGHESAT (APP_UID, AKHZ, ALARM, DASTGAHEJRAI, DEADLINE_ASNAD, DEADLINE_PASOKH, MABLAGH, MOZAYEDE_SHOMARE, NAHVE_SHERKAT, NAME, TAHVIL_BAR, TYPE, ZEMANAT_NAMEH, ZEMANAT_NAMEH_2) VALUES ('$APP_UID', '$AKHZ', '$ALARM', '$DASTGAHEJRAI', '$DEADLINE_ASNAD', '$DEADLINE_PASOKH', '$MABLAGH', '$MOZAYEDE_SHOMARE', '$NAHVE_SHERKAT', '$NAME', '$TAHVIL_BAR', '$TYPE', '$ZEMANAT_NAMEH', '$ZEMANAT_NAMEH_2')";
+$insert_query = "INSERT INTO prc_db_mozayedat_monaghesat (app_uid, akhz, alarm, dastgahejrai, deadline_asnad, deadline_pasokh, mablagh, mozayede_shomare, nahve_sherkat, name, tahvil_bar, type, zemanat_nameh, zemanat_nameh_2) values ('$app_uid', '$akhz', '$alarm', '$dastgahejrai', '$deadline_asnad', '$deadline_pasokh', '$mablagh', '$mozayede_shomare', '$nahve_sherkat', '$name', '$tahvil_bar', '$type', '$zemanat_nameh', '$zemanat_nameh_2')";
 executeQuery($insert_query);
 
 // Clear the session variables
-unset(@@AKHZ);
-unset(@@ALARM);
-unset(@@APP_UID);
-unset(@@DASTGAHEJRAI);
-unset(@@DEADLINE_ASNAD);
-unset(@@DEADLINE_PASOKH);
-unset(@@MABLAGH);
-unset(@@MOZAYEDE_SHOMARE);
-unset(@@NAHVE_SHERKAT);
-unset(@@NAME);
-unset(@@TAHVIL_BAR);
-unset(@@TYPE);
-unset(@@ZEMANAT_NAMEH);
-unset(@@ZEMANAT_NAMEH_2);
+unset(@@akhz);
+unset(@@alarm);
+unset(@@app_uid);
+unset(@@dastgahejrai);
+unset(@@deadline_asnad);
+unset(@@deadline_pasokh);
+unset(@@mablagh);
+unset(@@mozayede_shomare);
+unset(@@nahve_sherkat);
+unset(@@name);
+unset(@@tahvil_bar);
+unset(@@type);
+unset(@@zemanat_nameh);
+unset(@@zemanat_nameh_2);
