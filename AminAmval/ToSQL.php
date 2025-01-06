@@ -1,4 +1,4 @@
-<?
+
 // before get started, we should know column names,
 // here is SQL code to do so :
     //SELECT COLUMN_NAME
@@ -19,33 +19,32 @@
 // TEDAD
 // TYPE
 // VASZIYAT_ESTEFADE
-
-$APP_UID = @@APP_UID;
-$GROUH = @@GROUH;
-$MAKAN = @@MAKAN;
-$MOSHAKHASE = @@MOSHAKHASE;
-$ONVAN_AMVAL = @@ONVAN_AMVAL;
-$PELAK_AMVAL = @@PELAK_AMVAL;
-$SANAD = @@SANAD;
-$TAHVIL_GIRANDE = @@TAHVIL_GIRANDE;
-$TARIKH = @@TARIKH;
-$TEDAD = @@TEDAD;
-$VASZIYAT_ESTEFADE = @@VASZIYAT_ESTEFADE;
-
+$app_uid = uniqid();
+$grouh = @@grouh;
+$makan = @@makan;
+$moshakhase = @@moshakhase;
+$onvan_amval = @@onvan_amval;
+$pelak_amval = @@pelak_amval;
+$sanad = @@sanad;
+$tahvil_girande = @@tahvil_girande;
+$tarikh = @@tarikh;
+$tedad = @@tedad;
+$vasziyat_estefade = @@vasziyat_estefade;
 
 
-$insert_query = "INSERT INTO ??? (APP_UID, GROUH, MAKAN, MOSHAKHASE, ONVAN_AMVAL, PELAK_AMVAL, SANAD, TAHVIL_GIRANDE, TARIKH, TEDAD, VASZIYAT_ESTEFADE) VALUES ('$APP_UID', '$GROUH', '$MAKAN', '$MOSHAKHASE', '$ONVAN_AMVAL', '$PELAK_AMVAL', '$SANAD', '$TAHVIL_GIRANDE', '$TARIKH', '$TEDAD', '$VASZIYAT_ESTEFADE')";
+
+$insert_query = "INSERT INTO prc_db_amin_amval (app_uid, grouh, makan, moshakhase, onvan_amval, pelak_amval, sanad, tahvil_girande, tarikh, tedad, vasziyat_estefade) values ('$app_uid', '$grouh', '$makan', '$moshakhase', '$onvan_amval', '$pelak_amval', '$sanad', '$tahvil_girande', '$tarikh', '$tedad', '$vasziyat_estefade')";
 executeQuery($insert_query);
 
 // Clear the session variables
-unset(@@APP_UID);
-unset(@@GROUH);
-unset(@@MAKAN);
-unset(@@MOSHAKHASE);
-unset(@@ONVAN_AMVAL);
-unset(@@PELAK_AMVAL);
-unset(@@SANAD);
-unset(@@TAHVIL_GIRANDE);
-unset(@@TARIKH);
-unset(@@TEDAD);
-unset(@@VASZIYAT_ESTEFADE);
+//unset(@@APP_UID);
+unset(@@grouh);
+unset(@@makan);
+unset(@@moshakhase);
+unset(@@onvan_amval);
+unset(@@pelak_amval);
+unset(@@sanad);
+unset(@@tahvil_girande);
+unset(@@tarikh);
+unset(@@tedad);
+unset(@@vasziyat_estefade);
