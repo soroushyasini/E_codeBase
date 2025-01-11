@@ -1,0 +1,3 @@
+$("#textVar001111").css("backgroundColor", "orange");
+$("#textVar001111").css("border", "1px solid blue");
+$("#textVar001111").find("span.textlabel").css("color", "red");

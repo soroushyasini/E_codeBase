@@ -1,0 +1,10 @@
+
+$userInfoValues = userInfo(@@USER_LOGGED);
+$usern=$userInfoValues['username'];
+$db = '413360595592540e0a56cb7016723138';
+$query = "SELECT e.EmployeeCode FROM [Security].[UserManagement] as um
+inner join HumanResources.Employee as e on e.EmployeeID = um.UserManagementID
+where um.UserName='".$usern."'";
+$logs = executeQuery($query, $db);
+
+@@CodePersoneli = $logs[1]['EmployeeCode'];

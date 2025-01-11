@@ -1,0 +1,25 @@
+$("#button0000000001").click(function() {
+  var fld = $("#dropdownVar001").getControl()[0];
+  var fld2 = $("#dropdownVar002").getControl()[0];
+  for (var i = 1; i <= fld.options.length-1; i++)
+    {
+      $("#gridVar001").addRow();
+      var title = fld.options[i].text;
+      
+      $("#gridVar001").setValue(title, i, '4');
+      
+      var rand_num = fld2.options[i].text;
+      $("#gridVar001").setValue(rand_num, i, '3');
+  	}
+  	$("#gridVar001").deleteRow(fld.options.length);
+});
+
+$("#button0000000002").click(function() {
+    for (var i = 1; i <= 10; i++)
+    {
+      var ratio = parseInt($("#gridVar001").getValue(i, '3'));
+      var user_score = parseInt($("#gridVar001").getValue(i, '2'));
+      var final_score = ratio * user_score;
+      $("#gridVar001").setValue(final_score, i, '1');
+  	}
+});

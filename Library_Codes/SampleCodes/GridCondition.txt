@@ -1,0 +1,10 @@
+$("#submit0000000002").on("click", function(){
+  var rowCount1 = $("#gridVar3").getNumberRows();
+  for (var i = 1;i <= rowCount1;i++) {
+    if($("#gridVar3").getValue(i, '1'))
+    {
+      if(!($("#gridVar3").getValue(i, '2')) || (!$("#gridVar3").getValue(i, '3')))
+        alert("error!");
+    }
+  }
+});

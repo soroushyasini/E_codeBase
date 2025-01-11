@@ -1,0 +1,33 @@
+if ($("#checkboxVar").getValue() == '1') {
+	$("#textareaVar").show();
+}
+else if ($("#checkboxVar").getValue() == '0') {
+	$("#textareaVar").hide();
+}
+
+
+
+
+if ($("#MadarekPeyvast").getValue() == '1') {
+	$("#attach1").show();
+}
+else if ($("#MadarekPeyvast").getValue() == '0') {
+	$("#attach1").hide();
+}
+
+
+
+
+
+
+
+if ($("#drpLeaveType").getValue()=='1'){
+  	$('#txtFromTime').hide();
+	$('#txtToTime').hide();
+	$('#persiandate_txtdate').hide();
+}
+
+else if ($("#drpLeaveType").getValue()=='2'){
+    $("#persiandate_txtFromDate").hide();
+    $('#persiandate_txtToDate').hide();
+}

@@ -1,0 +1,5 @@
+-----------javaScipt------------------
+$("#image0000000001").setValue('http://localhost:805/Bpm/Extention/UserImageByUserName?username='+$("#person").getValue());
+
+----------triggers---------------------
+@@person=@@USR_USERNAME;

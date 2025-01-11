@@ -1,0 +1,32 @@
+﻿
+$("#Servicebutton").find("button").click(function(){
+  $.ajax({
+                type: "POST",
+                url: "http://localhost:810/WebS.asmx/getStock",
+                data: "productName="+$("#Kala").getText(), 
+                dataType: "json", 
+                success: function (data) {
+                  $("#Tedad").setValue(data[0].ProductCount) ;
+                }
+  });
+});
+
+
+
+("#Servicebutton").find("button").click(function(){
+  $.ajax({
+                type: "POST",
+                url: "http://localhost:810/WebS.asmx/getStock",
+                data: "productName="+$("#Product").getText(), 
+                dataType: "json", 
+                success: function (data) {
+                  $("#ProductCount").setValue(data[0].ProductCount) ;
+                }
+  });
+});
+
+
+
+
+
+

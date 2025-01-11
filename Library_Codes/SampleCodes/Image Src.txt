@@ -1,0 +1,9 @@
+// Javascript:
+$("#image0000000001").setValue('http://wiki.processmaker.com/sites/default/files/full-logo.png');
+$("#img_id").setValue('data:image/jpg;base64,binary data');
+
+
+
+
+// Trigger:
+@@img_src = 'http://wiki.processmaker.com/sites/default/files/full-logo.png';

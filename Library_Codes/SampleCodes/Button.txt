@@ -1,0 +1,5 @@
+$("#button0000000001").find("button").click(function() {
+var newVal = parseInt($("#x1").getValue()) * parseInt($("#x2").getValue());
+$("#x3").setValue(newVal);  
+});
+

@@ -1,0 +1,32 @@
+$query = "SELECT D.*, C.CON_VALUE FROM CONTENT C, APP_DOCUMENT D
+   WHERE D.APP_DOC_UID = C.CON_ID AND D.APP_UID = '$caseId' and
+   C.CON_CATEGORY = 'APP_DOC_FILENAME' and D.APP_DOC_TYPE = 'ATTACHED'";
+$result = executeQuery($query);
+$dataGrid = array();
+$i = 1;
+foreach ($result as $row)
+{
+	$server = (G::is_https() ? 'https://':'http://') . $_SERVER['SERVER_NAME'] .':'. $_SERVER['SERVER_PORT'];
+	$inputDocPath = $server . '/sys' . @@SYS_SYS .'/'. @@SYS_LANG .'/'. @@SYS_SKIN .
+		'/cases/cases_ShowDocument?a='. $row['APP_DOC_UID'];
+	$aUser = userInfo($row['USR_UID']);
+	$uploader = $aUser['firstname'] .' '. $aUser['lastname'] .' ('. $aUser['username'] . ')';
+
+	$dataGrid[$i] = array(
+		'fileName' => $row['CON_VALUE'],
+		'fileLink' => $inputDocPath,
+		'uploader' => $uploader
+	);
+	$i++;
+	
+	
+	//Download and Archive Files------
+	$dir = "MyFiles/files1/".$caseId;
+	mkdir($dir);
+	file_put_contents($dir."/".$row['CON_VALUE'],fopen($inputDocPath, 'r'));
+	//--------------------------------
+}
+
+if (is_array($dataGrid) && count($dataGrid) > 0) {
+	@=FilesList = $dataGrid;
+}

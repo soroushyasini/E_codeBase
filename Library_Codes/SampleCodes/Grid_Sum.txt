@@ -1,0 +1,9 @@
+$("#button0000000001").click(function() {
+  var rowCount = $("#gridVar001").getNumberRows();
+  var total = 0;
+  for (var i = 1;i <= rowCount;i++) {
+    total += parseFloat($("#gridVar001").getValue(i, '3'));
+  }
+
+  $('#textVar001').setValue(total);
+});

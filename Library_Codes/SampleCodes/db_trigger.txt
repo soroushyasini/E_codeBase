@@ -1,0 +1,44 @@
+------------------------------------------------------------------------
+// getting grid info:
+@=grid2_var = array();
+$query = "SELECT APP_STATUS, APP_NUMBER, APP_UID FROM application";
+$logs = executeQuery($query);
+
+if (COUNT($logs) > 0) {
+	for($i=1;$i<=COUNT($logs);$i++){
+		@=grid2_var[$i] = array(
+			"t1" => $logs[$i]['APP_UID'],
+			"t2" => $logs[$i]['APP_NUMBER'],
+			"t3" =>  $logs[$i]['APP_STATUS']
+		);
+	}
+}
+
+
+------------------------------------------------------------------------
+// additional database connecting:
+$db = '259979248592e6ba3f1fe30033519549';
+$query = "SELECT UserManagementID, UserName, CreateDate FROM [WebOfficeDataNew].[Security].[UserManagement] where UserManagementID=2";
+$logs = executeQuery($query, $db);
+
+@@test_var = $logs[1]['UserName'];
+
+
+------------------------------------------------------------------------
+//Read data from database, insert them in fields and update them to database
+
+
+	//  1) Read and insert trigger
+
+$db = '6886596675b20d011285105058888276';
+$query = "SELECT m_bahogoogh, m_bihogoogh FROM morakhasi where 	username='".@@USR_USERNAME."'";
+$logs = executeQuery($query, $db);
+@@m_bahogoogh = $logs[1]['m_bahogoogh'];
+@@m_bihogoogh = $logs[1]['m_bihogoogh'];
+
+
+	//   2) update them into database
+
+$db = '6886596675b20d011285105058888276';
+$query ="UPDATE `morakhasi` SET `m_bahogoogh`='".@@m_ba_jadid."',`m_bihogoogh`='".@@m_bi_jadid."' where username='".@@USR_USERNAME."'";
+executeQuery($query, $db);

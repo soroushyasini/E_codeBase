@@ -1,0 +1,1 @@
+$('#LoptopBrand').find('input').mask('00:00');

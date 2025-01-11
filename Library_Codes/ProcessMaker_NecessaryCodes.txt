@@ -1,0 +1,82 @@
+﻿برگرداندن اطلاعات کاربر => Trigger
+$user_info = userInfo(@@USER_LOGGED);
+@@name_darkhastkonande = $user_info['firstname'].' '.$user_info['lastname'];
+===========================================================
+UId کاربر لاگین کننده => Trigger
+@@USER_LOGGED
+===========================================================
+مقدار کنترل => Jquery
+$('#hiddenVar001').getControl().val()
+$('#hiddenVar001').find('input').val()
+=======================================================
+مخفی کردن ستون Grid => jquery
+$('#MainGrid').hideColumn(4);
+===========================================================
+نمایش و مخفی کردن کنترل => jquery
+$('#approvedManager').hide()
+$('#approvedManager').show()
+==================================================================
+نمایش و مخفی کردن یک فیلد با تغییر حالت فیلدی دیگر => jquery
+
+//Object Radio hide and show:
+$('#vacation_var').hide();
+$("#request_kind").setOnchange( function(newVal, oldVal) {
+  if (newVal == "1") { 
+    $("#vacation_var").show();
+  }
+  else {
+    $("#vacation_var").hide();
+  }
+});
+===========================================================
+اعتبارسنجی => jquery
+jQuery("#fieldID").disableValidation()
+jQuery("#fieldID").enableValidation()
+===========================================================
+کوئری با استفاده از Trigger
+$db = '259979248592e6ba3f1fe30033519549';
+$query = "SELECT UserManagementID, UserName, CreateDate FROM [WebOfficeDataNew].[Security].[UserManagement] where UserManagementID=2";
+$logs = executeQuery($query, $db);
+@@test_var = $logs[1]['UserName'];
+===========================================================
+سلکت با استفاده از property web control
+select  Quantity from goods_tbl where [id] = @@Item_Name;
+===========================================================
+رنگ کنترل
+ $('#Managerdesc').getControl().css('background-color','red');
+=============================================================
+چک کردن تاریخ
+var jdf = new jDateFunctions();
+var pd = new persianDate();
+$("#submit0000000001").on("click", function(){
+  if($("#persiandate_start_var").getControl().is(':visible')){
+    $from = jdf.getJulianDayFromPersian(pd.parse($("#persiandate_start_var").getControl().attr("data-jdate")));
+    $to = jdf.getJulianDayFromPersian(pd.parse($("#persiandate_end_var").getControl().attr("data-jdate")));
+    
+    if($from>$to){
+      alert("تاریخ شروع نباید دیرتر از تاریخ اتمام باشد!");
+      return false;
+    }
+
+  }
+});
+
+==================================================================
+شکیل سازی محیط فرم ها
+
+Label:
+$('#label0000000001').css("text-align", "right").css("color","blue").css("background-color", "#c4c5c6").css("font-size", "18px");
+$('#label0000000002').css("text-align", "right").css("color","blue").css("background-color", "#c4c5c6").css("font-size", "18px");
+$('#label0000000003').css("text-align", "right").css("color","blue").css("background-color", "#c4c5c6").css("font-size", "18px");
+
+Panel:
+<div style="background-color:lightblue;height:35px;width:100%">
+  <center><h3>
+    مشخصات درخواست
+    </h3></center>
+</div>
+
+Title:
+$("#title0000000002").find("span").css("backgroundColor", "red").css("color","white");
+
+

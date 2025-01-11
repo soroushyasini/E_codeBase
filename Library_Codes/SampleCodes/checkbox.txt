@@ -1,0 +1,12 @@
+$("#checkboxVar").setOnchange( function(newVal, oldVal) {
+if ($("#checkboxVar").getValue() == '1') {
+	$("#textareaVar").show();
+}
+else {
+	$("#textareaVar").hide();
+}
+});
+
+$(document).ready(function(){
+$("#textareaVar").hide();
+});
