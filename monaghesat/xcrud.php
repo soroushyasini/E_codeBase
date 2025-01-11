@@ -4,7 +4,8 @@ $xcrud = Xcrud::get_instance();
 $xcrud->table('PRC_DB_MOZAYEDAT_MONAGHESAT');
 
 $xcrud->columns(array('NAME', 'TYPE', 'MOZAYEDE_SHOMARE', 'DASTGAHEJRAI', 'DASTGAHEJRAI', 'MABLAGH', 'DEADLINE_ASNAD', 'DEADLINE_PASOKH', 'TAHVIL_BAR', 'ZEMANAT_NAMEH', 'ZEMANAT_NAMEH_2', 'AKHZ'));
-
+//$xcrud->columns('GROUH, ONVAN_AMVAL');
+//$xcrud->columns('NAME, TYPE, MOZAYEDE_SHOMARE, DASTGAHEJRAI, DASTGAHEJRAI, MABLAGH, n2_date(DEADLINE_ASNAD), DEADLINE_PASOKH, TAHVIL_BAR, ZEMANAT_NAMEH, ZEMANAT_NAMEH_2, AKHZ');
 $xcrud->label('NAME','عنوان ');
 $xcrud->label('TYPE','نوع ');
 $xcrud->label('MOZAYEDE_SHOMARE','شماره مزایده/مناقصه');

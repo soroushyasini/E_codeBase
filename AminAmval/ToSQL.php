@@ -1,4 +1,4 @@
-
+<?
 // before get started, we should know column names,
 // here is SQL code to do so :
     //SELECT COLUMN_NAME
