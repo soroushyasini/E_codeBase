@@ -26,11 +26,12 @@ $xcrud->label('VAHED_MARBUTE','واحد');
 // Enable delete button
 $xcrud->button('javascript:;', 'Delete', 'fa fa-trash', 'btn btn-danger', array(
     'data-task' => 'delete',
-    'data-primary' => '{ID}', // Use the unique identifier 'APP_UID'
+    'data-primary' => '{IDs}', // Use the unique identifier 'APP_UID'
 ));
 // Set your table or view from main database (you can write your query directly)
 $xcrud->unset_remove(false);
 $xcrud->unset_edit(false);
+$xcrud->unset_numbers();
 @@panel_grid = $xcrud->render();
 
 
