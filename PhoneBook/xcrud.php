@@ -3,7 +3,7 @@ libXcrudLoad();
 $xcrud = Xcrud::get_instance();
 $xcrud->table('prc_db_phonebook');
 
-$xcrud->columns(array('name', 'number', 'dakheli', 'semat', 'contact_person', 'email', 'vahed_zirabt', 'shakhsiyat', 'tozihat'));
+$xcrud->columns(array('NAME', 'NUMBER', 'DAKHELI', 'SEMAT', 'CONTACT_PERSON', 'EMAIL', 'VAHED_ZIRABT', 'SHAKHSIYAT', 'TOZIHAT'));
 
 $xcrud->label('name','نام فرد/سازمان');
 $xcrud->label('number','شماره تماس');
