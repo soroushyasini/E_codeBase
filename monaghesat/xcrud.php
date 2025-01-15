@@ -21,6 +21,7 @@ $xcrud->label('AKHZ','منبع');
 $xcrud->label('TAMIN_KONNANDE','تامین کننده');
 $xcrud->label('VAHED_MARBUTE','واحد');
 
+
 $xcrud->unset_numbers();
 // Enable delete button
 $xcrud->button('javascript:;', 'Delete', 'fa fa-trash', 'btn btn-danger', array(
