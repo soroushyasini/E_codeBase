@@ -10,8 +10,10 @@ $sarHaffarSelected = @=sar_haffar_checkgroup;
 $haffarSelected = @=haffar_checkgroup;
 $kargarSelected = @=kargar_checkgroup;
 $komakHaffarSelected = @=komak_haffar_checkgroup;
+$check_1_6_checkgroupSelected = @=check_1_6_checkgroup;
+$check_1_6_checkgroupSelected = @=check_7_14_checkgroup;
 // get the data from form, the groups are excluded : 
-    $Projects = @@Projects;
+$Projects = @@Projects;
 $form_serial_number_str = @@form_serial_number_str;
 $Gamane_name = @@Gamane_name;
 $dastgah_name = @@dastgah_name;
@@ -47,14 +49,8 @@ $sarHaffarString = implode(',', $sarHaffarSelected);
 $haffarString = implode(',', $haffarSelected);
 $kargarString = implode(',', $kargarSelected);
 $komakHaffarString = implode(',', $komakHaffarSelected);
-
-
-
-
-
-
-
-
+$check_1_6_checkgroupString = implode(',', $check_1_6_checkgroupSelected)
+$check_7_14_checkgroupString = implode(',', $check_7_14_checkgroupSelected)
 // Insert into the database
 $query = "INSERT INTO prc_test_production_table (
     sarparast, negahban, zaminshenas, driver, sar_haffar, haffar, kargar, komak_haffar,
@@ -62,7 +58,7 @@ $query = "INSERT INTO prc_test_production_table (
     dastgah_saat, start_our_str, end_our_str, drill_start_flt, drill_end_flt, 
     drill_amount, corebox_start_int, corebox_end_int, corebox_amount, water_flt, 
     gaso_flt, oil_flt, supermix_flt, bentonite_flt, aux_kargar, aux_komak_haffar, 
-    list_vorudi, list_khruji, text_checkbox_tozihat, text_sharh_haffari
+    list_vorudi, list_khruji, text_checkbox_tozihat, text_sharh_haffari, check_1_6_checkgroupString , check_7_14_checkgroupString
 ) VALUES (
     '$sarparastString', '$negahbanString', '$zaminshenasString', '$driverString', 
     '$sarHaffarString', '$haffarString', '$kargarString', '$komakHaffarString',
@@ -70,7 +66,7 @@ $query = "INSERT INTO prc_test_production_table (
     '$dastgah_saat', '$start_our_str', '$end_our_str', '$drill_start_flt', '$drill_end_flt', 
     '$drill_amount', '$corebox_start_int', '$corebox_end_int', '$corebox_amount', '$water_flt', 
     '$gaso_flt', '$oil_flt', '$supermix_flt', '$bentonite_flt', '$aux_kargar', '$aux_komak_haffar', 
-    '$list_vorudi', '$list_khruji', '$text_checkbox_tozihat', '$text_sharh_haffari'
+    '$list_vorudi', '$list_khruji', '$text_checkbox_tozihat', '$text_sharh_haffari', '$check_1_6_checkgroupString', '$check_7_14_checkgroupString'
 );";
 executeQuery($query);
 
