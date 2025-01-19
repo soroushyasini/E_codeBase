@@ -1,25 +1,6 @@
 <?
 
 
-// $names = @@result; // Fetch the result from the query
-// $options = [];
-
-// foreach ($names as $name) {
-//     $options[] = [
-//         'value' => $name['komak_haffar'],
-//         'label' => $name['komak_haffar']
-//     ];
-// }
-
-// @=selected_names_options = json_encode($options); // Store the options in a variable
-
-// $komakHaffar = @=komak_haffar_checkboxgroup; // Get selected names from the Checkbox Group
-// $namesString = implode(',', $komakHaffar); // Convert array to comma-separated string
-
-// // Insert into the database
-// $query = "INSERT INTO prc_db_test_gozaresh (komak_haffar) VALUES ('$namesString')";
-// executeQuery($query);
-
 // Get selected values from each Checkbox Group
 $sarparastSelected = @=sarparast_checkgroup;
 $negahbanSelected = @=negahban_checkgroup;
@@ -29,6 +10,33 @@ $sarHaffarSelected = @=sar_haffar_checkgroup;
 $haffarSelected = @=haffar_checkgroup;
 $kargarSelected = @=kargar_checkgroup;
 $komakHaffarSelected = @=komak_haffar_checkgroup;
+// get the data from form, the groups are excluded : 
+    $Projects = @@Projects;
+$form_serial_number_str = @@form_serial_number_str;
+$Gamane_name = @@Gamane_name;
+$dastgah_name = @@dastgah_name;
+$shift = @@shift;
+$form_date = @@form_date;
+$dastgah_saat = @@dastgah_saat;
+$start_our_str = @@start_our_str;
+$end_our_str = @@end_our_str;
+$drill_start_flt = @@drill_start_flt;
+$drill_end_flt = @@drill_end_flt;
+$drill_amount = @@drill_amount;
+$corebox_start_int = @@corebox_start_int;
+$corebox_end_int = @@corebox_end_int;
+$corebox_amount = @@corebox_amount;
+$water_flt = @@water_flt;
+$gaso_flt = @@gaso_flt;
+$oil_flt = @@oil_flt;
+$supermix_flt = @@supermix_flt;
+$bentonite_flt = @@bentonite_flt;
+$aux_kargar = @@aux_kargar;
+$aux_komak_haffar = @@aux_komak_haffar;
+$list_vorudi = @@list_vorudi;
+$list_khruji = @@list_khruji;
+$text_checkbox_tozihat = @@text_checkbox_tozihat;
+$text_sharh_haffari = @@text_sharh_haffari;
 
 // Convert selected values to comma-separated strings
 $sarparastString = implode(',', $sarparastSelected);
@@ -40,11 +48,79 @@ $haffarString = implode(',', $haffarSelected);
 $kargarString = implode(',', $kargarSelected);
 $komakHaffarString = implode(',', $komakHaffarSelected);
 
+
+
+
+
+
+
+
 // Insert into the database
 $query = "INSERT INTO prc_test_production_table (
-    sarparast, negahban, zaminshenas, driver, sar_haffar, haffar, kargar, komak_haffar
+    sarparast, negahban, zaminshenas, driver, sar_haffar, haffar, kargar, komak_haffar,
+    Projects, form_serial_number_str, Gamane_name, dastgah_name, shift, form_date, 
+    dastgah_saat, start_our_str, end_our_str, drill_start_flt, drill_end_flt, 
+    drill_amount, corebox_start_int, corebox_end_int, corebox_amount, water_flt, 
+    gaso_flt, oil_flt, supermix_flt, bentonite_flt, aux_kargar, aux_komak_haffar, 
+    list_vorudi, list_khruji, text_checkbox_tozihat, text_sharh_haffari
 ) VALUES (
     '$sarparastString', '$negahbanString', '$zaminshenasString', '$driverString', 
-    '$sarHaffarString', '$haffarString', '$kargarString', '$komakHaffarString'
+    '$sarHaffarString', '$haffarString', '$kargarString', '$komakHaffarString',
+    '$Projects', '$form_serial_number_str', '$Gamane_name', '$dastgah_name', '$shift', '$form_date', 
+    '$dastgah_saat', '$start_our_str', '$end_our_str', '$drill_start_flt', '$drill_end_flt', 
+    '$drill_amount', '$corebox_start_int', '$corebox_end_int', '$corebox_amount', '$water_flt', 
+    '$gaso_flt', '$oil_flt', '$supermix_flt', '$bentonite_flt', '$aux_kargar', '$aux_komak_haffar', 
+    '$list_vorudi', '$list_khruji', '$text_checkbox_tozihat', '$text_sharh_haffari'
 );";
 executeQuery($query);
+
+
+
+
+
+// Clear the session variables
+unset(@@Projects);
+unset(@@form_serial_number_str);
+unset(@@Gamane_name);
+unset(@@dastgah_name);
+unset(@@shift);
+unset(@@form_date);
+unset(@@dastgah_saat);
+unset(@@start_our_str);
+unset(@@end_our_str);
+unset(@@drill_start_flt);
+unset(@@drill_end_flt);
+unset(@@drill_amount);
+unset(@@corebox_start_int);
+unset(@@corebox_end_int);
+unset(@@corebox_amount);
+unset(@@water_flt);
+unset(@@gaso_flt);
+unset(@@oil_flt);
+unset(@@supermix_flt);
+unset(@@bentonite_flt);
+unset(@@aux_kargar);
+unset(@@aux_komak_haffar);
+unset(@@list_vorudi);
+unset(@@list_khruji);
+unset(@@text_checkbox_tozihat);
+unset(@@text_sharh_haffari);
+
+
+    // Replace this with your database connection and query execution logic
+    // Example using mysqli:
+    /*
+    $conn = new mysqli("localhost", "username", "password", "database");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    if ($conn->query($query) === TRUE) {
+        echo "New record created successfully";
+    } else {
+        echo "Error: " . $query . "<br>" . $conn->error;
+    }
+    $conn->close();
+    */
+    echo "Query executed: " . $query;
+}
+?>
