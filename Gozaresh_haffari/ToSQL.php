@@ -101,22 +101,3 @@ unset(@@list_vorudi);
 unset(@@list_khruji);
 unset(@@text_checkbox_tozihat);
 unset(@@text_sharh_haffari);
-
-
-    // Replace this with your database connection and query execution logic
-    // Example using mysqli:
-    /*
-    $conn = new mysqli("localhost", "username", "password", "database");
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    if ($conn->query($query) === TRUE) {
-        echo "New record created successfully";
-    } else {
-        echo "Error: " . $query . "<br>" . $conn->error;
-    }
-    $conn->close();
-    */
-    echo "Query executed: " . $query;
-}
-?>
