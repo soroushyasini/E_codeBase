@@ -53,20 +53,21 @@ $check_1_6_checkgroupString = implode(',', $check_1_6_checkgroupSelected)
 $check_7_14_checkgroupString = implode(',', $check_7_14_checkgroupSelected)
 // Insert into the database
 $query = "INSERT INTO prc_test_production_table (
-    sarparast, negahban, zaminshenas, driver, sar_haffar, haffar, kargar, komak_haffar,
-    Projects, form_serial_number_str, Gamane_name, dastgah_name, shift, form_date, 
+    id, Projects, form_serial_number_str, Gamane_name, dastgah_name, shift, form_date, 
     dastgah_saat, start_our_str, end_our_str, drill_start_flt, drill_end_flt, 
     drill_amount, corebox_start_int, corebox_end_int, corebox_amount, water_flt, 
-    gaso_flt, oil_flt, supermix_flt, bentonite_flt, aux_kargar, aux_komak_haffar, 
-    list_vorudi, list_khruji, text_checkbox_tozihat, text_sharh_haffari, check_1_6_checkgroupString , check_7_14_checkgroupString
+    gaso_flt, oil_flt, supermix_flt, bentonite_flt, sarparast, negahban, zaminshenas, 
+    driver, sar_haffar, haffar, kargar, komak_haffar, aux_kargar, aux_komak_haffar, 
+    list_vorudi, list_khruji, text_checkbox_tozihat, text_sharh_haffari, 
+    check_1_6_checkgroup, check_7_14_checkgroup
 ) VALUES (
-    '$sarparastString', '$negahbanString', '$zaminshenasString', '$driverString', 
-    '$sarHaffarString', '$haffarString', '$kargarString', '$komakHaffarString',
-    '$Projects', '$form_serial_number_str', '$Gamane_name', '$dastgah_name', '$shift', '$form_date', 
-    '$dastgah_saat', '$start_our_str', '$end_our_str', '$drill_start_flt', '$drill_end_flt', 
-    '$drill_amount', '$corebox_start_int', '$corebox_end_int', '$corebox_amount', '$water_flt', 
-    '$gaso_flt', '$oil_flt', '$supermix_flt', '$bentonite_flt', '$aux_kargar', '$aux_komak_haffar', 
-    '$list_vorudi', '$list_khruji', '$text_checkbox_tozihat', '$text_sharh_haffari', '$check_1_6_checkgroupString', '$check_7_14_checkgroupString'
+    NULL, '$Projects', '$form_serial_number_str', '$Gamane_name', '$dastgah_name', '$shift', DATE(n2_date('$form_date')), 
+    '$dastgah_saat', '$start_our_str', '$end_our_str', $drill_start_flt, $drill_end_flt, 
+    $drill_amount, $corebox_start_int, $corebox_end_int, $corebox_amount, $water_flt, 
+    $gaso_flt, $oil_flt, $supermix_flt, $bentonite_flt, '$sarparastString', '$negahbanString', '$zaminshenasString', 
+    '$driverString', '$sarHaffarString', '$haffarString', '$kargarString', '$komakHaffarString', 
+    '$aux_kargar', '$aux_komak_haffar', '$list_vorudi', '$list_khruji', '$text_checkbox_tozihat', 
+    '$text_sharh_haffari', '$check_1_6_checkgroupString', '$check_7_14_checkgroupString'
 );";
 executeQuery($query);
 
