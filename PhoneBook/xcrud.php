@@ -7,9 +7,9 @@ $xcrud->columns(array('id','name','cellphone','number','dakheli','semat','contac
 
 $xcrud->label('id','ID');
 $xcrud->label('name','نام مخاطب');
-$xcrud->label('cellphone',' شماره موبایل');
 $xcrud->label('number','شماره تماس');
 $xcrud->label('dakheli','شماره داخلی');
+$xcrud->label('cellphone',' شماره موبایل');
 $xcrud->label('semat','سمت');
 $xcrud->label('contact_person','شخص رابط');
 $xcrud->label('email','ایمیل/سایت');
