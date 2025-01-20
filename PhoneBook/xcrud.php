@@ -3,7 +3,7 @@ libXcrudLoad();
 $xcrud = Xcrud::get_instance();
 $xcrud->table('prc_db_phonebook_emidco');
 
-$xcrud->columns(array('id','name','cellphone','number','dakheli','semat','contact_person','email','vahed_zirabt','toziat'));
+$xcrud->columns(array('id','name','number','dakheli','semat','contact_person','email','vahed_zirabt','toziat','cellphone'));
 
 $xcrud->label('id','ID');
 $xcrud->label('name','نام مخاطب');
@@ -16,7 +16,7 @@ $xcrud->label('email','ایمیل/سایت');
 $xcrud->label('vahed_zirabt','واحد ذی‌ربط');
 $xcrud->label('toziat','توضیحات');
 // $xcrud->label('USER_LOGGED','ID');
-// $xcrud->label('created_at','ID');
+// $xcrud->label('created_at','ID'); ,'cellphone'
 
 $xcrud->unset_numbers();
 // Enable delete button
