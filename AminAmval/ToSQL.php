@@ -19,9 +19,9 @@ $vasziyat_estefade = @@vasziyat_estefade;
 
 
 
-$insert_query = "INSERT INTO prc_db_amin_amval (app_uid, grouh, makan, moshakhase, onvan_amval, pelak_amval, sanad, tahvil_girande, tarikh, tedad, vasziyat_estefade) values ('$app_uid', '$grouh', '$makan', '$moshakhase', '$onvan_amval', '$pelak_amval', '$sanad', '$tahvil_girande', '$tarikh', '$tedad', '$vasziyat_estefade')";
+$insert_query = "INSERT INTO prc_db_amin_amval (app_uid, grouh, makan, moshakhase, onvan_amval, pelak_amval, sanad, tahvil_girande, tarikh, tedad, vasziyat_estefade) values ('$app_uid', '$grouh', '$makan', '$moshakhase', '$onvan_amval', '$pelak_amval', '$sanad', '$tahvil_girande', DATE(n2_date('$tarikh')), '$tedad', '$vasziyat_estefade')";
 executeQuery($insert_query);
-
+DATE(n2_date('$gregorian_deadline_asnad'));
 // Clear the session variables
 //unset(@@APP_UID);
 unset(@@grouh);
