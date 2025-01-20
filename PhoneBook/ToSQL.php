@@ -15,8 +15,9 @@ $email = @@email;
 $vahed_zirabt = @@vahed_zirabt;
 $shakhsiyat = @@shakhsiyat;
 $tozihat = @@tozihat;
+$cellphone = @@cellphone;
 // Prepare the SQL INSERT query
-$insert_query = "INSERT INTO prc_db_phonebook_emidco (name, number, dakheli, semat, contact_person, email, vahed_zirabt, shakhsiyat, tozihat, USER_LOGGED) VALUES ('$name', '$number', '$dakheli', '$semat', '$contact_person', '$email', '$vahed_zirabt', '$shakhsiyat','$tozihat', '$USER_LOGGED')";
+$insert_query = "INSERT INTO prc_db_phonebook_emidco (name, number, dakheli, semat, contact_person, email, vahed_zirabt, shakhsiyat, tozihat, USER_LOGGED, cellphone) VALUES ('$name', '$number', '$dakheli', '$semat', '$contact_person', '$email', '$vahed_zirabt', '$shakhsiyat','$tozihat', '$USER_LOGGED','$cellphone')";
 
 // Execute the query
 executeQuery($insert_query);
@@ -31,3 +32,4 @@ unset(@@email);
 unset(@@vahed_zirabt);
 unset(@@shakhsiyat);
 unset(@@tozihat);
+unset(@@cellphone);

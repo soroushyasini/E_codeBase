@@ -3,11 +3,11 @@ libXcrudLoad();
 $xcrud = Xcrud::get_instance();
 $xcrud->table('prc_db_phonebook_emidco');
 
-$xcrud->columns(array('id','name','shakhsiyat','number','dakheli','semat','contact_person','email','vahed_zirabt','toziat'));
+$xcrud->columns(array('id','name','cellphone','number','dakheli','semat','contact_person','email','vahed_zirabt','toziat'));
 
 $xcrud->label('id','ID');
 $xcrud->label('name','نام مخاطب');
-$xcrud->label('shakhsiyat','نوع مخاطب');
+$xcrud->label('cellphone',' شماره موبایل');
 $xcrud->label('number','شماره تماس');
 $xcrud->label('dakheli','شماره داخلی');
 $xcrud->label('semat','سمت');
