@@ -1,0 +1,114 @@
+<div>
+    <canvas id="dabirkhane_letters"></canvas>
+  </div>
+  
+  <!-- Include Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Include B Nazanin font from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
+  
+  <!-- Chart initialization script -->
+  <script>
+    // Hardcoded data
+    const labels = [
+      "1403-08-15", "1403-08-16", "1403-08-17", "1403-08-19", "1403-08-22",
+      "1403-08-23", "1403-08-27", "1403-08-28", "1403-08-29", "1403-08-30",
+      "1403-09-01", "1403-09-07", "1403-09-10", "1403-09-11", "1403-09-12",
+      "1403-09-13", "1403-09-14", "1403-09-18", "1403-09-19", "1403-09-20",
+      "1403-09-21", "1403-09-22", "1403-09-24", "1403-09-27", "1403-09-28",
+      "1403-10-01", "1403-10-02", "1403-10-03", "1403-10-04", "1403-10-05",
+      "1403-10-06", "1403-10-08", "1403-10-09", "1403-10-10", "1403-10-11",
+      "1403-10-12", "1403-10-13", "1403-10-15", "1403-10-16", "1403-10-17",
+      "1403-10-18", "1403-10-19", "1403-10-22", "1403-10-23", "1403-10-24",
+      "1403-10-26", "1403-10-27", "1403-10-29", "1403-10-30", "1403-11-01"
+    ];
+  
+    const data = [
+      5, 4, 13, 13, 6, 1, 4, 4, 2, 12,
+      5, 1, 4, 12, 9, 5, 6, 8, 6, 8,
+      6, 4, 3, 4, 4, 1, 10, 7, 2, 2,
+      7, 11, 3, 3, 1, 1, 2, 4, 7, 5,
+      1, 4, 1, 12, 1, 3, 2, 4, 3, 1
+    ];
+  
+    // Get the canvas element
+    const ctx = document.getElementById('dabirkhane_letters').getContext('2d');
+  
+    // Create the line chart
+    new Chart(ctx, {
+      type: 'line', // Use 'line' for a line plot
+      data: {
+        labels: labels, // X-axis: Dates
+        datasets: [{
+          label: '(خانم جعفری)نامه های ثبت شده روزانه ',
+          data: data, // Y-axis: Number of records
+          backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color under the line
+          borderColor: 'rgba(75, 192, 192, 1)', // Line color
+          borderWidth: 2, // Line thickness
+          fill: true, // Fill the area under the line
+          tension: 0.4 // Smooth the line
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'تعداد نامه',
+              font: {
+                family: 'B Nazanin', // Apply B-Nazanin font
+                size: 14,
+                weight: 'bold' // Bold text
+              }
+            },
+            ticks: {
+              font: {
+                family: 'B Nazanin', // Apply B-Nazanin font
+                size: 12,
+                weight: 'bold' // Bold text
+              }
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'تاریخ',
+              font: {
+                family: 'B Nazanin', // Apply B-Nazanin font
+                size: 14,
+                weight: 'bold' // Bold text
+              }
+            },
+            ticks: {
+              font: {
+                family: 'B Nazanin', // Apply B-Nazanin font
+                size: 12,
+                weight: 'bold' // Bold text
+              }
+            }
+          }
+        },
+        plugins: {
+          tooltip: {
+            enabled: true, // Enable tooltips
+            mode: 'index', // Show tooltips for all datasets at the same index
+            intersect: false, // Show tooltips even if the cursor is between points
+            bodyFont: {
+              family: 'B-Nazanin', // Apply B-Nazanin font
+              size: 12,
+              weight: 'bold' // Bold text
+            },
+            titleFont: {
+              family: 'B Nazanin', // Apply B-Nazanin font
+              size: 14,
+              weight: 'bold' // Bold text
+            }
+          }
+        }
+      }
+    });
+  
+    // Debug: Confirm chart initialization
+    console.log("Chart initialized");
+  </script>
