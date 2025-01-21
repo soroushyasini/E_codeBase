@@ -1,40 +1,85 @@
 <div>
-    <canvas id="myChart"></canvas>
-  </div>
-  
-  <!-- Include Chart.js library -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-  <!-- Chart initialization script -->
-  <script>
-    // Wait for the library to load
-    document.addEventListener('DOMContentLoaded', function() {
-      // Get the canvas element
-      const ctx = document.getElementById('myChart').getContext('2d');
-  
-      // Define the chart data
-      const data = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [{
-          label: 'My First Dataset',
-          data: [65, 59, 80, 81, 56, 55, 40],
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
-        }]
-      };
-  
-      // Create the chart
-      new Chart(ctx, {
-        type: 'bar', // Change to 'line', 'pie', etc., as needed
-        data: data,
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
+  <canvas id="myChart"></canvas>
+</div>
+
+<!-- Include Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Include B Nazanin font from Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
+
+<!-- Your JavaScript code -->
+<script>
+  // Data to be plotted
+  const data = {
+    labels: ['1403-10-24', '1403-10-26', '1403-10-27', '1403-10-30', '1403-11-01', '1403-11-02'], // Dates
+    datasets: [{
+      label: '  (تعداد مخاطب روزانه ثبت شده (خانم مهمان نواز', // Label for the dataset
+      data: [18, 41, 41, 4, 37, 11], // Record counts
+      borderColor: 'rgba(75, 192, 192, 1)', // Line color
+      borderWidth: 2, // Line width
+      fill: false // Do not fill under the line
+    }]
+  };
+
+  // Get the chart canvas element
+  const ctx = document.getElementById('myChart').getContext('2d');
+
+  // Create the chart
+  new Chart(ctx, {
+    type: 'line', // Use a line chart
+    data: data, // Pass the data
+    options: {
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+              family: 'B Nazanin', // Use B Nazanin font
+              size: 16, // Font size
+              weight: 'bold' // Bold text
             }
           }
         }
-      });
-    });
-  </script>
+      },
+      scales: {
+        y: {
+          beginAtZero: true, // Start the y-axis at 0
+          title: {
+            display: true,
+            text: 'تعداد مخاطب وارد شده', // Y-axis label
+            font: {
+              family: 'B Nazanin', // Use B Nazanin font
+              size: 16, // Font size
+              weight: 'bold' // Bold text
+            }
+          },
+          ticks: {
+            font: {
+              family: 'B Nazanin', // Use B Nazanin font
+              size: 14, // Font size
+              weight: 'bold' // Bold text
+            }
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'تاریخ', // X-axis label
+            font: {
+              family: 'B Nazanin', // Use B Nazanin font
+              size: 16, // Font size
+              weight: 'bold' // Bold text
+            }
+          },
+          ticks: {
+            font: {
+              family: 'B Nazanin', // Use B Nazanin font
+              size: 14, // Font size
+              weight: 'bold' // Bold text
+            }
+          }
+        }
+      }
+    }
+  });
+</script>
