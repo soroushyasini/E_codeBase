@@ -1,0 +1,10 @@
+$(document).ready(function(){
+  form = getFormById("8662719725a8c2e8a419f27051829585");
+form.setOnSubmit(function(){
+  if($('#x3').getValue() == 0 || $('#x3').getValue() == "" || $('#x3').getValue() == "NaN"){
+  $("#x3").find("span.textlabel").css("color", "red");
+  alert ("???? ???? ?????? ?? ?????");
+	return false; 
+   }
+    });
+});

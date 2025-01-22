@@ -1,0 +1,49 @@
+﻿//--------------بر اساس دکمه ارسال---------------
+
+var jdf = new jDateFunctions();
+var pd = new persianDate();
+$("#submit0000000001").on("click", function(){
+  if($("#persiandate_start_var").getControl().is(':visible')){
+    $from = jdf.getJulianDayFromPersian(pd.parse($("#persiandate_start_var").getControl().attr("data-jdate")));
+    $to = jdf.getJulianDayFromPersian(pd.parse($("#persiandate_end_var").getControl().attr("data-jdate")));
+    
+    if($from>$to){
+      alert("تاریخ شروع نباید دیرتر از تاریخ اتمام باشد!");
+//      $("#days_var").setValue("");
+      return false;
+    }
+    else
+    {
+      $("#Duration").setValue($to - $from + 1);
+    }
+  }
+});
+
+
+
+//-------------- بر اساس  کليک---------------
+
+
+
+var jdf = new jDateFunctions();
+var pd = new persianDate();
+$("#52090454159cb3fa8b132b3046919750").click(function(){
+  if($("#persiandate_start_var").getControl().is(':visible')){
+    $from = jdf.getJulianDayFromPersian(pd.parse($("#persiandate_start_var").getControl().attr("data-jdate")));
+    $to = jdf.getJulianDayFromPersian(pd.parse($("#persiandate_end_var").getControl().attr("data-jdate")));
+    
+    if($from>$to){
+      alert("تاریخ شروع نباید دیرتر از تاریخ اتمام باشد!");
+//      $("#days_var").setValue("");
+      return false;
+    }
+    else
+    {
+      $("#Duration").setValue($to - $from + 1);
+    }
+  }
+});
+
+
+
+//--------------------------------------------------------------------------------

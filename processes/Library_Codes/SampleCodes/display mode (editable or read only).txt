@@ -1,0 +1,54 @@
+
+????:
+https://forum.processmaker.com/viewtopic.php?t=709111
+
+
+
+
+
+grid:
+							   $(document).ready(function(){
+var numRows = $("#SaleDitails").getNumberRows();
+       for (var i=1; i <= numRows; i++) {
+                    $("#SaleDitails").getControl(i, 1).attr('disabled', true);
+      			    $("#SaleDitails").getControl(i, 2).attr('disabled', true);
+      			    $("#SaleDitails").getControl(i, 3).attr('disabled', true);
+     			    $("#SaleDitails").getControl(i, 4).attr('disabled', true);
+      			    $("#SaleDitails").getControl(i, 6).attr('disabled', true);
+				};
+           });
+
+
+
+function enableDisableText() {
+  if( $('#storyapproved001').getValue() == '"1"' ) {
+        $("#storysouce1").getControl().attr('disabled', true);
+    } else {
+        $("#storysouce1").getControl().attr('disabled', false);
+    }
+}
+$('#storyapproved001').getValue(enableDisableText);
+
+
+
+
+$('#storyapproved001').getValue(function () {
+  if( $('#storyapproved001').getValue() == 1 ) {
+        $("#storysouce1").getControl().attr('disabled', true);
+    } else {
+        $("#storysouce1").getControl().attr('disabled', false);
+    }
+} );
+
+
+
+
+
+function enableDisableText() {
+  if( $('#storyapproved001').getValue() == '"1"' ) {
+        $("#storysouce1").getControl().attr('disabled', true);
+    } else {
+        $("#storysouce1").getControl().attr('disabled', false);
+    }
+}
+enableDisableText();

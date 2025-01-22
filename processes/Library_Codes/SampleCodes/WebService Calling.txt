@@ -1,0 +1,54 @@
+//Sample 1 -------------------------------------------------
+$("#button1").find("button").click(function(){
+	$.ajax({
+		type: "POST",
+		url: "webservice url",
+		data: "productName="+$("#Article").getText(),
+		dataType: "json",
+		success: function(data){
+			$("#ArticleCount").setValue(data[0].ProductCount);
+		}
+	});
+});
+
+
+
+
+
+
+//Sample 2 -------------------------------------------------
+$.ajax({
+			type: "POST",
+			url: "webservice url",
+			
+			data: "Parameter="+$("#txtiddarkhast").getText(),
+			dataType: "json", 
+			success: function (data) {
+				PushVal(data);
+			}
+});
+function PushVal(data){
+	var counter=0;
+	var rows = $("#grddarkhastkala").getNumberRows();
+	for (var i=1; i <= rows; i++) {
+		$("#grddarkhastkala").deleteRow();
+	}
+
+	for(var ro = 0 ; ro<=data.length-1;ro++)
+	{
+		// debugger;
+		var aData = [
+			
+			{value: data[ro].N_darkhastkonande  }, 
+			{value: data[ro].C_kala        } ,
+			{value: data[ro].anbar_out     } ,
+			{value: data[ro].Nkala         } ,
+			{value: data[ro].meghdar_taeed } ,
+			{value: data[ro].Date_Niaz         } , 
+			{value: data[ro].Mored_masraf         } ,
+			{value: data[ro].shFani         } 
+		];
+
+		$("#grddarkhastkala").addRow(aData);
+	}
+}

@@ -1,0 +1,2 @@
+@@Data = executeQuery("SELECT APP_NUMBER FROM APPLICATION WHERE APP_UID = '" . @@APPLICATION . "'");
+@@case_num_var = @@Data[1]['APP_NUMBER'];

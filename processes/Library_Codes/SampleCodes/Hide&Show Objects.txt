@@ -1,0 +1,44 @@
+//Radio & DropDown
+---------------------------------------------------------
+$("#request_kind").setOnchange(function(newVal, oldVal)
+{
+  if (newVal == "1")
+  { 
+	$("#vacation_var").show();
+  }
+  else
+  {
+	$("#vacation_var").hide();
+  }
+});
+
+
+
+//CheckBox
+----------------------------------------------------------
+$("#checkboxVar").setOnchange(function(newVal, oldVal)
+{
+	if (newVal == '"1"' || newVal == '["1"]')
+	{
+		$("#app_id").hide();
+	}
+	else
+	{
+		$("#app_id").show();
+	}
+} );
+
+
+
+//Empty content
+-----------------------------------------------------------
+$(document).ready(function(){
+   if($('#DesignPlanConfirmation').getValue()== '')
+  {
+    $('#DesignPlanConfirmation').hide();
+    $('#DesignPlanDescription').hide();
+  }else{
+    $('#DesignPlanConfirmation').show();
+    $('#DesignPlanDescription').show();
+  }
+});

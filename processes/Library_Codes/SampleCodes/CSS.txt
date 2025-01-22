@@ -1,0 +1,15 @@
+$('#grid_var').css("background-color", "#c4c5c6");
+$('#gridVar001').css("text-align", "right");
+$('#title0000000001').css("text-align", "center");
+$("#fullname_var").css("borderColor", "blue");
+
+//TextFields input settings
+--------------------------------------
+$('#price_var').getControl().css("font-size", "10px");
+$('#price_var').getControl().css("border", "none");
+$('#price_var').getControl().css("text-align", "right");
+$('#textarea_var').getControl().css("resize", "none");
+$("#fullname_var").getControl().css("borderColor", "green");
+
+
+$("#title0000000001").css("color","red");

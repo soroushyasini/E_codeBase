@@ -1,0 +1,22 @@
+Get User Info:
+--------------
+$user_info = userInfo(@@USER_LOGGED);
+@@name_darkhastkonande = $user_info['firstname'].' '.$user_info['lastname'];
+
+
+Get Case Number:
+----------------
+@@Data = executeQuery("SELECT APP_NUMBER FROM APPLICATION WHERE APP_UID = '" . @@APPLICATION . "'");
+@@case_num_var = @@Data[1]['APP_NUMBER'];
+
+
+Cancel Case:
+------------
+if (@@action == "CANCEL") {
+   	$c = new Cases();
+	//$c->removeCase(@@APPLICATION);
+	$c->cancelCase(@@APPLICATION, @%INDEX, @@USER_LOGGED);
+    //redirect back to the inbox:
+	echo '<script> top.location = "../cases/main" </script>';
+   	die();
+};

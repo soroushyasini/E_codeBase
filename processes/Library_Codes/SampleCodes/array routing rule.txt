@@ -1,0 +1,1 @@
+﻿in_array(1, @@cgrp_var)
