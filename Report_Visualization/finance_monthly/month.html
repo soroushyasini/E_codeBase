@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نمودارهای مالی اردیبهشت</title>
+  <title>'گزارش مالی اردیبهشت</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     /* Load B Nazanin font */
@@ -29,27 +29,23 @@
   </style>
 </head>
 <body>
-  <h1 style="text-align: center;">نمودارهای مالی اردیبهشت</h1>
+  <!--<h1 style="text-align: center;">نمودارهای مالی اردیبهشت</h1>
 
   <!-- Bar Chart: Debit vs Credit -->
   <h2 style="text-align: center;">نمودار میله ای - بدهکار vs بستانکار</h2>
-  <canvas id="ordibehesht" width="800" height="400"></canvas>
-
-  <!-- Line Chart: Debit Balance vs Credit Balance -->
-  <h2 style="text-align: center;">نمودار خطی - مانده بدهکار vs مانده بستانکار</h2>
-  <canvas id="balanceLineChart" width="800" height="400"></canvas>
+  <canvas id="ordibehesht_debitCreditBar" width="800" height="400"></canvas>
 
   <!-- Pie Chart: Distribution of Debit Balances -->
   <h2 style="text-align: center;">نمودار دایره ای - توزیع مانده بدهکار</h2>
-  <canvas id="debitBalancePieChart" width="800" height="400"></canvas>
+  <canvas id="ordibehesht_debitBalancePieChart" width="800" height="400"></canvas>
 
   <script>
     // Apply B Nazanin font to Chart.js
     Chart.defaults.font.family = 'B Nazanin';
 
     // Bar Chart: Debit vs Credit
-    const debitCreditBarCtx = document.getElementById('ordibehesht').getContext('2d');
-    const debitCreditBarChart = new Chart(debitCreditBarCtx, {
+    const ordibeheshtDebitCreditBarCtx = document.getElementById('ordibehesht_debitCreditBar').getContext('2d');
+    const ordibeheshtDebitCreditBarChart = new Chart(ordibeheshtDebitCreditBarCtx, {
       type: 'bar',
       data: {
         labels: [
@@ -105,65 +101,10 @@
       }
     });
 
-    // Line Chart: Debit Balance vs Credit Balance
-    const balanceLineCtx = document.getElementById('balanceLineChart').getContext('2d');
-    const balanceLineChart = new Chart(balanceLineCtx, {
-      type: 'line',
-      data: {
-        labels: [
-          'موجودی نقد و بانک', 'سپرده های کوتاه مدت', 'اسناد دریافتنی', 
-          'حساب های دریافتنی غیر تجاری', 'پیش پرداختها', 'اموال،ماشین آلات و تجهیزات', 
-          'معادن', 'حساب های پرداختنی تجاری', 'اسناد پرداختنی کوتاه مدت', 
-          'سایر حساب های پرداختنی', 'تسهیلات و وام دریافتی کوتاه مدت', 'جاری اشخاص', 
-          'سایر درآمدها غیرعملیاتی', 'هزینه های حقوق و دستمزد', 'هزینه های کارکنان', 
-          'هزینه های عملیاتی', 'هزینه های مالی', 'سایر هزینه های اداری و تشکیلاتی'
-        ],
-        datasets: [
-          {
-            label: 'مانده بدهکار',
-            data: [
-              134808878890, 0, 0, 64098340869, 15435135441, 750000000, 
-              4131666611, 41821337990, 317348464500, 33593031670, 78200821917, 
-              0, 0, 7797946678, 8674226146, 12800047742, 2821399868, 1672134998
-            ],
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 2,
-            fill: false
-          },
-          {
-            label: 'مانده بستانکار',
-            data: [
-              0, 21302580250, 699529584400, 0, 0, 0, 0, 0, 0, 0, 0, 
-              3117179400, 4089270, 0, 0, 0, 0, 0
-            ],
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 2,
-            fill: false
-          }
-        ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'مقدار (ریال)'
-            }
-          }
-        },
-        plugins: {
-          title: {
-            display: true,
-            text: 'تغییرات مانده بدهکار و مانده بستانکار'
-          }
-        }
-      }
-    });
 
     // Pie Chart: Distribution of Debit Balances
-    const debitBalancePieCtx = document.getElementById('debitBalancePieChart').getContext('2d');
-    const debitBalancePieChart = new Chart(debitBalancePieCtx, {
+    const ordibeheshtDebitBalancePieCtx = document.getElementById('ordibehesht_debitBalancePieChart').getContext('2d');
+    const ordibeheshtDebitBalancePieChart = new Chart(ordibeheshtDebitBalancePieCtx, {
       type: 'pie',
       data: {
         labels: [
