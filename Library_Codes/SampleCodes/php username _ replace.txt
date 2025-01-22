@@ -1,3 +1,0 @@
-$uname = @@USR_USERNAME;
-$uname = str_replace('_', '.', $uname);
-@@uname = $uname;

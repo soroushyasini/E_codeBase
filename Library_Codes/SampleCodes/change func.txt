@@ -1,1 +1,0 @@
-$('#esghatshodan').change(function(){

@@ -1,5 +1,0 @@
-<div style="background-color:lightblue;height:35px;width:100%">
-  <center><h3>
-    Цтнугй оянФгсй
-    </h3></center>
-</div>

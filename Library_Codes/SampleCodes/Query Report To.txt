@@ -1,4 +1,0 @@
-$query = "SELECT DEP_MANAGER from department WHERE DEP_UID = (SELECT DEP_PARENT from department WHERE DEP_UID = (SELECT DEP_UID FROM users WHERE USR_USERNAME = '".@@USR_USERNAME."'))";
-$logs = executeQuery($query);
-
-@@report_id = $logs[1]['DEP_MANAGER'];

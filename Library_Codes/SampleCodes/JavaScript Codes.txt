@@ -1,8 +1,0 @@
-//DropDown Multiple Options Selection:
-$("#dropdownVar1").getControl()[0].multiple = true;
-
-//DropDown Option Disable:
-$("#dropdownVar1").find("option[value=1]").attr("disabled", "disabled");
-
-//Link href:
-$("#link0000000001").find("a").prop("href", "http://google.com");

@@ -1,9 +1,0 @@
-manager sample trriger code:
-
-
-$uid = @@USER_LOGGED;
-//$data = executeQuery("Select USR_REPORTS_TO from USERS where USR_UID = '$uid'");
-//@@Name = $data[1]['USR_REPORTS_TO'];
-
-
-@@user_var = @@USER_LOGGED;

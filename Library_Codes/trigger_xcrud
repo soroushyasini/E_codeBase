@@ -1,4 +1,0 @@
-libXcrudLoad();
-$xcrud = Xcrud::get_instance();
-$xcrud->table('pmt_em_f_pr_02_v2');
-@@panel_content = $xcrud->render();

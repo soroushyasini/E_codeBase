@@ -1,5 +1,0 @@
-$db = '259979248592e6ba3f1fe30033519549';
-$query = "SELECT UserManagementID, UserName, CreateDate FROM [WebOfficeDataNew].[Security].[UserManagement] where UserManagementID=2";
-$logs = executeQuery($query, $db);
-
-@@test_var = $logs[1]['UserName'];
