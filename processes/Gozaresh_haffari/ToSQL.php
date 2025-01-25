@@ -1,4 +1,4 @@
-<?php
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -69,7 +69,7 @@ $query = "INSERT INTO prc_db_gozaresh_ruzane (
     list_vorudi, list_khruji, text_checkbox_tozihat, text_sharh_haffari, 
     check_1_6_checkgroup, check_7_14_checkgroup
 ) VALUES (
-    '$Projects', '$form_serial_number_str', '$Gamane_name', '$dastgah_name', '$shift', '$form_date', 
+    '$Projects', '$form_serial_number_str', '$Gamane_name', '$dastgah_name', '$shift', DATE(n2_date('$form_date')), 
     '$dastgah_saat', '$start_our_str', '$end_our_str', $drill_start_flt, $drill_end_flt, 
     $drill_amount, $corebox_start_int, $corebox_end_int, $corebox_amount, $water_flt, 
     $gaso_flt, $oil_flt, $supermix_flt, $bentonite_flt, '$sarparastString', '$negahbanString', '$zaminshenasString', 
@@ -110,4 +110,3 @@ unset(@@list_vorudi);
 unset(@@list_khruji);
 unset(@@text_checkbox_tozihat);
 unset(@@text_sharh_haffari);
-?>
