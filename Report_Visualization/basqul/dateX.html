@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sum of Weights per Day Chart</title>
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Canvas for the chart -->
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <script>
+        // Variable to hold jsonData (will be populated dynamically)
+        let jsonData;
+
+        // Function to draw the chart
+        function drawChart() {
+            // Ensure jsonData is populated
+            if (!jsonData || jsonData.length === 0) {
+                console.error("jsonData is not populated yet!");
+                return;
+            }
+
+            // Group data by date and calculate the sum of weights for each day
+            const groupedData = {};
+            jsonData.forEach(entry => {
+                const date = entry.تاریخ;
+                const netWeight = parseInt(entry["وزن خالص"]);
+
+                if (!groupedData[date]) {
+                    groupedData[date] = 0;
+                }
+                groupedData[date] += netWeight;
+            });
+
+            // Extract dates and summed weights
+            const dates = Object.keys(groupedData);
+            const summedWeights = Object.values(groupedData);
+
+            // Create the chart
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar', // Type of chart (bar, line, pie, etc.)
+                data: {
+                    labels: dates, // X-axis labels (dates)
+                    datasets: [{
+                        label: 'مجموع وزن خالص (کیلوگرم)', // Label for the dataset
+                        data: summedWeights, // Y-axis data (summed weights)
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)', // Bar color
+                        borderColor: 'rgba(75, 192, 192, 1)', // Border color
+                        borderWidth: 1 // Border width
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true, // Start Y-axis from 0
+                            title: {
+                                display: true,
+                                text: 'مجموع وزن خالص (کیلوگرم)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'تاریخ'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to simulate fetching JSON data from a DynaForm field
+        // Function to simulate fetching JSON data from a DynaForm field
+        function populateJsonDataFromDynaForm() {
+            // Access the DynaForm field using $("#textVar001").getValue()
+            const jsonString = $("#textVar001").getValue();
+
+            // Parse the JSON string
+            try {
+                jsonData = JSON.parse(jsonString);
+                console.log("jsonData populated from DynaForm:", jsonData);
+
+                // Draw the chart
+                drawChart();
+            } catch (error) {
+                console.error("Invalid JSON:", error);
+            }
+        }
+
+        // Simulate DynaForm field population (replace this with your actual DynaForm logic)
+        setTimeout(() => {
+            populateJsonDataFromDynaForm();
+        }, 2000); // Sim
+    </script>
+</body>
+</html>
