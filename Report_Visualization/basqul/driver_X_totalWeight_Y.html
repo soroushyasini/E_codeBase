@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart.js Example</title>
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Canvas for the chart -->
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <script>
+        // Variable to hold jsonData (will be populated dynamically)
+        let jsonData;
+
+        // Function to draw the chart
+        function drawChart() {
+            // Ensure jsonData is populated
+            if (!jsonData || jsonData.length === 0) {
+                console.error("jsonData is not populated yet!");
+                return;
+            }
+
+            // Extract labels (drivers) and data (net weights) from jsonData
+            const labels = jsonData.map(item => item.راننده);
+            const data = jsonData.map(item => parseInt(item["وزن خالص"]));
+
+            // Create the chart
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar', // Type of chart (bar, line, pie, etc.)
+                data: {
+                    labels: labels, // X-axis labels (drivers)
+                    datasets: [{
+                        label: 'وزن خالص (کیلوگرم)', // Label for the dataset
+                        data: data, // Y-axis data (net weights)
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar color
+                        borderColor: 'rgba(75, 192, 192, 1)', // Border color
+                        borderWidth: 1 // Border width
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true, // Start Y-axis from 0
+                            title: {
+                                display: true,
+                                text: 'وزن خالص (کیلوگرم)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'راننده'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to simulate fetching JSON data from a DynaForm field
+        function populateJsonDataFromDynaForm() {
+            // Access the DynaForm field using $("#textVar001").getValue()
+            const jsonString = $("#textVar001").getValue();
+
+            // Parse the JSON string
+            try {
+                jsonData = JSON.parse(jsonString);
+                console.log("jsonData populated from DynaForm:", jsonData);
+
+                // Draw the chart
+                drawChart();
+            } catch (error) {
+                console.error("Invalid JSON:", error);
+            }
+        }
+
+        // Simulate DynaForm field population (replace this with your actual DynaForm logic)
+        setTimeout(() => {
+            populateJsonDataFromDynaForm();
+        }, 2000); // Sim
+    </script>
+</body>
+</html>
