@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stacked Bar Chart with Total Weight Line</title>
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <!-- Canvas for the chart -->
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <script>
+        // Variable to hold jsonData (will be populated dynamically)
+        let jsonData;
+
+        // Function to draw the chart
+        function drawChart() {
+            // Ensure jsonData is populated
+            if (!jsonData || jsonData.length === 0) {
+                console.error("jsonData is not populated yet!");
+                return;
+            }
+
+            // Group data by date and driver
+            const groupedData = {};
+            jsonData.forEach(entry => {
+                const date = entry.تاریخ;
+                const driver = entry.راننده;
+                const netWeight = parseInt(entry["وزن خالص"]);
+
+                if (!groupedData[date]) {
+                    groupedData[date] = {};
+                }
+                if (!groupedData[date][driver]) {
+                    groupedData[date][driver] = 0;
+                }
+                groupedData[date][driver] += netWeight;
+            });
+
+            // Extract unique dates and drivers
+            const dates = Object.keys(groupedData);
+            const drivers = [...new Set(jsonData.map(entry => entry.راننده))];
+
+            // Sort dates in ascending order (earliest first)
+            dates.sort((a, b) => new Date(a) - new Date(b));
+
+            // Prepare datasets for Chart.js
+            const datasets = drivers.map(driver => {
+                return {
+                    label: driver, // Label for the dataset (driver)
+                    data: dates.map(date => groupedData[date][driver] || 0), // Weight for each date
+                    backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.6)`, // Random color for each driver
+                    borderWidth: 1
+                };
+            });
+
+            // Calculate total weight for each date
+            const totalWeights = dates.map(date => {
+                return Object.values(groupedData[date]).reduce((sum, weight) => sum + weight, 0);
+            });
+
+            // Add total weight as a line dataset
+            datasets.push({
+                label: 'مجموع وزن روز', // Label for the total weight line
+                data: totalWeights, // Total weight for each date
+                type: 'line', // Use a line for this dataset
+                borderColor: 'rgba(255, 99, 132, 0.9)', // Red color for the line
+                borderWidth: 3,
+                fill: false, // Do not fill under the line
+                pointRadius: 0, // Make points visible
+                pointBackgroundColor: 'rgba(255, 99, 132, 1)' // Red color for points
+              	//tension: 0.5
+            });
+
+            // Create the chart
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dates, // X-axis labels (dates)
+                    datasets: datasets // Datasets for each driver and total weight line
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true, // Start Y-axis from 0
+                            stacked: true, // Stacked bars
+                            title: {
+                                display: true,
+                                text: 'تناژ',
+                                font: {
+                                    family: 'B Nazanin', // Apply B-Nazanin font
+                                    size: 18,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        x: {
+                            stacked: true, // Stacked bars
+                            title: {
+                                display: true,
+                                text: 'تاریخ',
+                                font: {
+                                    family: 'B Nazanin', // Apply B-Nazanin font
+                                    size: 18,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Hide the legend
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to simulate fetching JSON data from a DynaForm field
+        function populateJsonDataFromDynaForm() {
+            // Access the DynaForm field using $("#textVar001").getValue()
+            const jsonString = $("#textVar001").getValue();
+
+            // Parse the JSON string
+            try {
+                jsonData = JSON.parse(jsonString);
+                console.log("jsonData populated from DynaForm:", jsonData);
+
+                // Draw the chart
+                drawChart();
+            } catch (error) {
+                console.error("Invalid JSON:", error);
+            }
+        }
+
+        // Simulate DynaForm field population (replace this with your actual DynaForm logic)
+        setTimeout(() => {
+            populateJsonDataFromDynaForm();
+        }, 2000); // Sim
+    </script>
+</body>
+</html>
