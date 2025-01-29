@@ -13,7 +13,7 @@ $check_1_6_checkgroupSelected = @=check_1_6_checkgroup;
 $check_7_14_checkgroupSelected = @=check_7_14_checkgroup;
 
 // Get the data from the form
-$Projects = @@Projects;
+$Projects = @@Projects; Projects
 $form_serial_number_str = @@form_serial_number_str;
 $Gamane_name = @@Gamane_name;
 $dastgah_name = @@dastgah_name;
