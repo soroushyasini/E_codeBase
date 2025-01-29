@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shift Bar Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <canvas id="shiftChart"></canvas>
+
+    <script>
+
+        function drawChart(jsonData) {
+            const ctx = document.getElementById('shiftChart').getContext('2d');
+
+            // Extract labels (person names) and values (shift counts)
+            const labels = jsonData.map(item => item["شخص"]);
+            const dayShifts = jsonData.map(item => item["شیفت روز"]);
+            const nightShifts = jsonData.map(item => item["شیفت شب"]);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'شیفت روز',
+                            data: dayShifts,
+                            backgroundColor: 'red',
+                        },
+                        {
+                            label: 'شیفت شب',
+                            data: nightShifts,
+                            backgroundColor: 'blue',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: { size: 12 },
+                                autoSkip: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Simulate calling the function (in real use, call it when needed)
+        $(document).ready(function () {
+            populateJsonDataFromDynaForm();
+        });
+        function populateJsonDataFromDynaForm() {
+            // Access the DynaForm field using $("#textVar001").getValue()
+            const jsonString = $("#shift_json_parser").getValue();
+
+            // Parse the JSON string
+            try {
+                jsonData = JSON.parse(jsonString);
+                console.log("jsonData populated from DynaForm:", jsonData);
+
+                // Draw the chart
+                drawChart();
+            } catch (error) {
+                console.error("Invalid JSON:", error);
+            }
+        }
+        setTimeout(() => {
+            populateJsonDataFromDynaForm();
+        }, 2000); // Sim
+    </script>
+</body>
+</html>
