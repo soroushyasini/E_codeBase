@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drilling Progress Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <script>
+        let jsonData;
+
+        function drawChart() {
+            if (!jsonData || jsonData.length === 0) {
+                console.error("No data available!");
+                return;
+            }
+
+            // Group data by date and shift
+            const groupedData = {};
+            jsonData.forEach(entry => {
+                const date = entry.تاریخ;
+                const shift = entry.شیفت;
+                const drillingAmount = parseFloat(entry["میزان حفاری"]);
+
+                if (!groupedData[date]) {
+                    groupedData[date] = {};
+                }
+                groupedData[date][shift] = drillingAmount; // Direct assignment (assuming one entry per shift/date)
+            });
+
+            // Extract and sort dates
+            const dates = Object.keys(groupedData).sort((a, b) => 
+                new Date(a) - new Date(b)
+            );
+
+            // Get unique shifts
+            const shifts = [...new Set(jsonData.map(entry => entry.شیفت))];
+
+            // Create datasets for each shift
+            const datasets = shifts.map(shift => ({
+                label: shift,
+                data: dates.map(date => groupedData[date][shift] || 0),
+                backgroundColor: `rgba(${Math.random()*255},${Math.random()*255},${Math.random()*255},0.6)`,
+                borderWidth: 1
+            }));
+
+            // Calculate totals for line chart
+            const totals = dates.map(date => 
+                Object.values(groupedData[date]).reduce((sum, val) => sum + val, 0)
+            );
+
+            // Add total line
+            datasets.push({
+                label: 'مجموع روزانه',
+                data: totals,
+                type: 'line',
+                borderColor: 'rgba(255, 99, 132, 0.9)',
+                borderWidth: 3,
+                fill: false
+            });
+
+            // Create chart
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: datasets
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'میزان حفاری (متر)',
+                                font: {
+                                    family: 'B Nazanin',
+                                    size: 18
+                                }
+                            }
+                        },
+                        x: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'تاریخ',
+                                font: {
+                                    family: 'B Nazanin',
+                                    size: 18
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to get data from web control
+        function loadDataFromWebControl() {
+            try {
+                // Replace with your actual web control access method
+                const jsonString = $("#json_parse").getValue(); 
+                jsonData = JSON.parse(jsonString);
+                drawChart();
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        // Initial load (use your framework's ready event)
+        setTimeout(loadDataFromWebControl, 1000);
+    </script>
+</body>
+</html>
