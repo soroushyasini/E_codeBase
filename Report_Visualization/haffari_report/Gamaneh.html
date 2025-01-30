@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drilling Progress by Borehole</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="boreholeChart" width="400" height="200"></canvas>
+
+    <script>
+        function loadDataFromWebControl() {
+            try {
+                const jsonString = $("#text0000000001").getValue();
+                jsonData = JSON.parse(jsonString);
+                drawChart();
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        setTimeout(loadDataFromWebControl, 1000);
+
+        let jsonData;
+
+        function drawChart() {
+            if (!jsonData || jsonData.length === 0) {
+                console.error("No data available!");
+                return;
+            }
+
+            // Group data by گمانه
+            const groupedData = {};
+            jsonData.forEach(entry => {
+                const borehole = entry.گمانه;
+                const date = entry.تاریخ;
+                const drillingAmount = parseFloat(entry["میزان حفاری"]);
+
+                if (!groupedData[borehole]) {
+                    groupedData[borehole] = {};
+                }
+                groupedData[borehole][date] = (groupedData[borehole][date] || 0) + drillingAmount;
+            });
+
+            // Extract unique boreholes
+            const boreholes = Object.keys(groupedData);
+
+            // Get unique sorted dates
+            const allDates = [...new Set(jsonData.map(entry => entry.تاریخ))].sort((a, b) => new Date(a) - new Date(b));
+
+            // Create datasets (one per date, alternating blue and red)
+            const datasets = allDates.map((date, index) => ({
+                label: date,
+                data: boreholes.map(borehole => groupedData[borehole][date] || 0),
+                backgroundColor: index % 2 === 0 ? "rgba(54, 162, 235, 0.7)" : "rgba(255, 99, 132, 0.7)",
+                borderWidth: 1
+            }));
+
+            // Create chart
+            const ctx = document.getElementById('boreholeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: boreholes, // Boreholes on x-axis
+                    datasets: datasets
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'میزان حفاری (متر)',
+                                font: {
+                                    family: 'B Nazanin',
+                                    size: 18
+                                }
+                            }
+                        },
+                        x: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'گمانه',
+                                font: {
+                                    family: 'B Nazanin',
+                                    size: 18
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
