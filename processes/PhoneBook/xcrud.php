@@ -22,7 +22,7 @@ $xcrud->unset_numbers();
 // Enable delete button
 $xcrud->button('javascript:;', 'Delete', 'fa fa-trash', 'btn btn-danger', array(
     'data-task' => 'delete',
-    'data-primary' => '{id}', // Use the unique identifier 'APP_UID'
+    'data-primary' => '{id}', // Use the unique identifier 'id'
 ));
 // Set your table or view from main database (you can write your query directly)
 $xcrud->unset_remove(false);
