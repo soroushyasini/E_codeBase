@@ -44,6 +44,7 @@ $text_sharh_haffari = @@text_sharh_haffari;
 $is_stopped = @@is_stopped;
 $stop_time = @@stop_time;
 $pack_lv = @@pack_lv;
+$iradat = @@iradat;
 
 // Convert selected values to comma-separated strings
 $sarparastString = implode(',', $sarparastSelected);
@@ -69,7 +70,7 @@ $query = "INSERT INTO prc_db_gozaresh_ruzane (
     gaso_flt, oil_flt, supermix_flt, bentonite_flt, sarparast, negahban, zaminshenas, 
     driver, sar_haffar, haffar, kargar, komak_haffar, aux_kargar, aux_komak_haffar, 
     list_vorudi, list_khruji, text_checkbox_tozihat, text_sharh_haffari, 
-    check_1_6_checkgroup, check_7_14_checkgroup, soda_flt, cement_flt, is_stopped, stop_causes, stop_time, pack_lv
+    check_1_6_checkgroup, check_7_14_checkgroup, soda_flt, cement_flt, is_stopped, stop_causes, stop_time, pack_lv, iradat
 ) VALUES (
     '$Projects', '$form_serial_number_str', '$Gamane_name', '$dastgah_name', '$shift', DATE(n2_date('$form_date')), 
     '$dastgah_saat', '$start_our_str', '$end_our_str', $drill_start_flt, $drill_end_flt, 
@@ -77,7 +78,7 @@ $query = "INSERT INTO prc_db_gozaresh_ruzane (
     $gaso_flt, $oil_flt, $supermix_flt, $bentonite_flt, '$sarparastString', '$negahbanString', '$zaminshenasString', 
     '$driverString', '$sarHaffarString', '$haffarString', '$kargarString', '$komakHaffarString', 
     '$aux_kargar', '$aux_komak_haffar', '$list_vorudi', '$list_khruji', '$text_checkbox_tozihat', 
-    '$text_sharh_haffari', '$check_1_6_checkgroupString', '$check_7_14_checkgroupString', '$soda_flt', '$cement_flt', '$is_stopped', '$stop_causesString', '$stop_time', '$pack_lv'
+    '$text_sharh_haffari', '$check_1_6_checkgroupString', '$check_7_14_checkgroupString', '$soda_flt', '$cement_flt', '$is_stopped', '$stop_causesString', '$stop_time', '$pack_lv', '$iradat'
 );";
 
 

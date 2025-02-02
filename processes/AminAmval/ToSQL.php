@@ -9,6 +9,7 @@
 $grouh = @@grouh;
 $makan = @@makan;
 $moshakhase = @@moshakhase;
+$type = @@type;
 $onvan_amval = @@onvan_amval;
 $pelak_amval = @@pelak_amval;
 $sanad = @@sanad;
@@ -16,10 +17,10 @@ $tahvil_girande = @@tahvil_girande;
 $tarikh = @@tarikh;
 $tedad = @@tedad;
 $vasziyat_estefade = @@vasziyat_estefade;
+$sherkat = @@sherkat;
 
-
-
-$insert_query = "INSERT INTO prc_db_amin_amval (grouh, makan, moshakhase, onvan_amval, pelak_amval, sanad, tahvil_girande, tarikh, tedad, vasziyat_estefade) values ('$grouh', '$makan', '$moshakhase', '$onvan_amval', '$pelak_amval', '$sanad', '$tahvil_girande', DATE(n2_date('$tarikh')), '$tedad', '$vasziyat_estefade')";
+$insert_query = "INSERT INTO prc_db_amin_amval (grouh, onvan_amval, tedad, type, moshakhase, makan, sanad, tarikh, pelak_amval, vasziyat_estefade, tahvil_girande ) 
+                 values ('$grouh', '$onvan_amval', '$tedad', '$type', '$moshakhase', '$makan', '$sanad', DATE(n2_date('$tarikh')), '$pelak_amval', '$vasziyat_estefade', '$tahvil_girande')";
 executeQuery($insert_query);
 // Clear the session variables
 //unset(@@APP_UID);
