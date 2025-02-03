@@ -1,14 +1,15 @@
+<?s
 libXcrudLoad();
 $xcrud = Xcrud::get_instance();
 $xcrud->table('prc_db_gozaresh_ruzane');
 
-$xcrud->columns('Projects, form_serial_number_str, Gamane_name, dastgah_name, shift, form_date, 
-    dastgah_saat, start_our_str, end_our_str, drill_start_flt, drill_end_flt, 
-    drill_amount, corebox_start_int, corebox_end_int, corebox_amount, water_flt, 
-    gaso_flt, oil_flt, supermix_flt, bentonite_flt, sarparast, negahban, zaminshenas, 
-    driver, sar_haffar, haffar, kargar, komak_haffar, aux_kargar, aux_komak_haffar, 
-    list_vorudi, list_khruji, text_checkbox_tozihat, text_sharh_haffari, 
-    check_1_6_checkgroup, check_7_14_checkgroup, soda_flt, cement_flt, is_stopped, stop_causes, stop_time, pack_lv, iradat');
+$xcrud->columns('Projects, form_serial_number_str, Gamane_name, dastgah_name, shift, form_date, dastgah_saat, start_our_str, end_our_str,
+sarparast, negahban, zaminshenas, driver, sar_haffar, haffar, kargar, komak_haffar, aux_kargar, aux_komak_haffar, 
+drill_start_flt, drill_end_flt, drill_amount, corebox_start_int, corebox_end_int, corebox_amount, water_flt, 
+gaso_flt, oil_flt, supermix_flt, bentonite_flt, soda_flt, cement_flt, pack_lv,
+list_vorudi, list_khruji, check_1_6_checkgroup, check_7_14_checkgroup, text_checkbox_tozihat,
+is_stopped, stop_causes, text_sharh_haffari, stop_time, iradat, id, insert_date, USER_LOGGED'
+);
 
 // Set Persian labels for columns
 $xcrud->label('Projects', 'پروژه‌ها');
