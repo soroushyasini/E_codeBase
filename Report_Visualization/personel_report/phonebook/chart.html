@@ -1,96 +1,3 @@
-<div>
-  <canvas id="myChart"></canvas>
-</div>
-
-<!-- Include Chart.js library -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Include B Nazanin font from Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
-
-<!-- Your JavaScript code -->
-<script>
-  // Data to be plotted
-  const data = {
-    labels: ['1403-10-24', '1403-10-26', '1403-10-27', '1403-10-30', '1403-11-01', '1403-11-02'], // Dates
-    datasets: [{
-      label: '  (تعداد مخاطب روزانه ثبت شده (خانم مهمان نواز', // Label for the dataset
-      data: [18, 41, 41, 4, 37, 11], // Record counts
-      borderColor: 'rgba(75, 192, 192, 1)', // Line color
-      borderWidth: 2, // Line width
-      fill: false // Do not fill under the line
-    }]
-  };
-
-  // Get the chart canvas element
-  const ctx = document.getElementById('myChart').getContext('2d');
-
-  // Create the chart
-  new Chart(ctx, {
-    type: 'line', // Use a line chart
-    data: data, // Pass the data
-    options: {
-      plugins: {
-        legend: {
-          labels: {
-            font: {
-              family: 'B Nazanin', // Use B Nazanin font
-              size: 16, // Font size
-              weight: 'bold' // Bold text
-            }
-          }
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: true, // Start the y-axis at 0
-          title: {
-            display: true,
-            text: 'تعداد مخاطب وارد شده', // Y-axis label
-            font: {
-              family: 'B Nazanin', // Use B Nazanin font
-              size: 16, // Font size
-              weight: 'bold' // Bold text
-            }
-          },
-          ticks: {
-            font: {
-              family: 'B Nazanin', // Use B Nazanin font
-              size: 14, // Font size
-              weight: 'bold' // Bold text
-            }
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'تاریخ', // X-axis label
-            font: {
-              family: 'B Nazanin', // Use B Nazanin font
-              size: 16, // Font size
-              weight: 'bold' // Bold text
-            }
-          },
-          ticks: {
-            font: {
-              family: 'B Nazanin', // Use B Nazanin font
-              size: 14, // Font size
-              weight: 'bold' // Bold text
-            }
-          }
-        }
-      }
-    }
-  });
-</script>
-
-
-
-
-
-
-
-// AUTO UPDATE :
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,10 +6,24 @@
     <title>Chart.js Example</title>
     <!-- Include Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include B Nazanin font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
+    <!-- Basic styling for the chart container -->
+    <style>
+        body {
+            font-family: 'B Nazanin', sans-serif;
+        }
+        #chart-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+    </style>
 </head>
 <body>
-    <!-- Canvas for the chart -->
-    <canvas id="myChart" width="400" height="200"></canvas>
+    <!-- Chart container -->
+    <div id="chart-container_myChart_1">
+        <canvas id="myChart_0001"></canvas>
+    </div>
 
     <script>
         // Variable to hold jsonData (will be populated dynamically)
@@ -120,24 +41,71 @@
             const labels = jsonData.map(item => item.date);
             const data = jsonData.map(item => item.count);
 
+            // Get the chart canvas element
+            const ctx = document.getElementById('myChart_0001').getContext('2d');
+
             // Create the chart
-            const ctx = document.getElementById('myChart').getContext('2d');
             new Chart(ctx, {
-                type: 'bar', // Type of chart (bar, line, pie, etc.)
+                type: 'line', // Type of chart (line, bar, pie, etc.)
                 data: {
                     labels: labels, // X-axis labels (dates)
                     datasets: [{
-                        label: 'Count', // Label for the dataset
+                        label: 'تعداد مخاطب روزانه ثبت شده (خانم مهمان نواز)', // Label for the dataset
                         data: data, // Y-axis data (counts)
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar color
-                        borderColor: 'rgba(75, 192, 192, 1)', // Border color
-                        borderWidth: 1 // Border width
+                        borderColor: 'rgba(75, 192, 192, 1)', // Line color
+                        borderWidth: 2, // Line width
+                        fill: false // Do not fill under the line
                     }]
                 },
                 options: {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    family: 'B Nazanin', // Use B Nazanin font
+                                    size: 16, // Font size
+                                    weight: 'bold' // Bold text
+                                }
+                            }
+                        }
+                    },
                     scales: {
                         y: {
-                            beginAtZero: true // Start Y-axis from 0
+                            beginAtZero: true, // Start Y-axis from 0
+                            title: {
+                                display: true,
+                                text: 'تعداد مخاطب وارد شده', // Y-axis label
+                                font: {
+                                    family: 'B Nazanin', // Use B Nazanin font
+                                    size: 16, // Font size
+                                    weight: 'bold' // Bold text
+                                }
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'B Nazanin', // Use B Nazanin font
+                                    size: 14, // Font size
+                                    weight: 'bold' // Bold text
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'تاریخ', // X-axis label
+                                font: {
+                                    family: 'B Nazanin', // Use B Nazanin font
+                                    size: 16, // Font size
+                                    weight: 'bold' // Bold text
+                                }
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'B Nazanin', // Use B Nazanin font
+                                    size: 14, // Font size
+                                    weight: 'bold' // Bold text
+                                }
+                            }
                         }
                     }
                 }
