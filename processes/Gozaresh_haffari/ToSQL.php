@@ -45,7 +45,7 @@ $is_stopped = @@is_stopped;
 $stop_time = @@stop_time;
 $pack_lv = @@pack_lv;
 $iradat = @@iradat;
-$USER_LOGGED = @@USER_LOGGED;
+
 // Convert selected values to comma-separated strings
 $sarparastString = implode(',', $sarparastSelected);
 $negahbanString = implode(',', $negahbanSelected);
@@ -64,23 +64,22 @@ $stop_causesString = implode(',',$stop_causesSelected);
 
 // Insert into the database
 $query = "INSERT INTO prc_db_gozaresh_ruzane (
-    Projects, form_serial_number_str, Gamane_name, dastgah_name, shift, form_date, dastgah_saat, start_our_str, end_our_str, 
-    sarparast, negahban, zaminshenas, driver, sar_haffar, haffar, kargar, komak_haffar, aux_kargar, aux_komak_haffar, 
-    drill_start_flt, drill_end_flt, drill_amount, corebox_start_int, corebox_end_int, corebox_amount, water_flt, 
-    gaso_flt, oil_flWWt, supermix_flt, bentonite_flt, soda_flt, cement_flt, pack_lv, 
-    list_vorudi, list_khruji, check_1_6_checkgroup, check_7_14_checkgroup, text_checkbox_tozihat, 
-    is_stopped, stop_causes, text_sharh_haffari, stop_time, iradat, USER_LOGGED
+    Projects, form_serial_number_str, Gamane_name, dastgah_name, shift, form_date, 
+    dastgah_saat, start_our_str, end_our_str, drill_start_flt, drill_end_flt, 
+    drill_amount, corebox_start_int, corebox_end_int, corebox_amount, water_flt, 
+    gaso_flt, oil_flt, supermix_flt, bentonite_flt, sarparast, negahban, zaminshenas, 
+    driver, sar_haffar, haffar, kargar, komak_haffar, aux_kargar, aux_komak_haffar, 
+    list_vorudi, list_khruji, text_checkbox_tozihat, text_sharh_haffari, 
+    check_1_6_checkgroup, check_7_14_checkgroup, soda_flt, cement_flt, is_stopped, stop_causes, stop_time, pack_lv, iradat
 ) VALUES (
     '$Projects', '$form_serial_number_str', '$Gamane_name', '$dastgah_name', '$shift', DATE(n2_date('$form_date')), 
-    '$dastgah_saat', '$start_our_str', '$end_our_str', '$sarparastString', '$negahbanString', '$zaminshenasString', 
-    '$driverString', '$sarHaffarString', '$haffarString', '$kargarString', '$komakHaffarString', 
-    '$aux_kargar', '$aux_komak_haffar', $drill_start_flt, $drill_end_flt, 
+    '$dastgah_saat', '$start_our_str', '$end_our_str', $drill_start_flt, $drill_end_flt, 
     $drill_amount, $corebox_start_int, $corebox_end_int, $corebox_amount, $water_flt, 
-    $gaso_flt, $oil_flt, $supermix_flt, $bentonite_flt, '$soda_flt', '$cement_flt', '$pack_lv', 
-    '$list_vorudi', '$list_khruji', '$check_1_6_checkgroupString', '$check_7_14_checkgroupString', '$text_checkbox_tozihat', 
-    '$is_stopped', '$stop_causesString', '$text_sharh_haffari', '$stop_time', '$iradat', '$USER_LOGGED'
+    $gaso_flt, $oil_flt, $supermix_flt, $bentonite_flt, '$sarparastString', '$negahbanString', '$zaminshenasString', 
+    '$driverString', '$sarHaffarString', '$haffarString', '$kargarString', '$komakHaffarString', 
+    '$aux_kargar', '$aux_komak_haffar', '$list_vorudi', '$list_khruji', '$text_checkbox_tozihat', 
+    '$text_sharh_haffari', '$check_1_6_checkgroupString', '$check_7_14_checkgroupString', '$soda_flt', '$cement_flt', '$is_stopped', '$stop_causesString', '$stop_time', '$pack_lv', '$iradat'
 );";
-
 
 
 echo $query; // Debug: Print the query

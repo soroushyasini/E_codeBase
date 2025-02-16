@@ -1,0 +1,2 @@
+SELECT USR_UID AS value, CONCAT(USR_FIRSTNAME, ' ', USR_LASTNAME) AS label FROM USERS
+WHERE USR_FIRSTNAME NOT IN ('Guest', 'Administrator','کاربر');
