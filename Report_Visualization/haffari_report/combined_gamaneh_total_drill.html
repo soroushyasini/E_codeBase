@@ -13,11 +13,11 @@
         }
         .chart-container {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             flex-wrap: wrap;
         }
         .chart-box {
-            width: 45%;
+            width: 75%;
             min-width: 400px;
         }
     </style>
@@ -27,10 +27,6 @@
     <h3>اطلاعات حفاری پروژه راه چمن</h3>
     
     <div class="chart-container">
-        <div class="chart-box">
-            <h4>میزان حفاری روزانه</h4>
-            <canvas id="myChart"></canvas>
-        </div>
         <div class="chart-box">
             <h4>عمق گمانه</h4>
             <canvas id="drillingChart"></canvas>
@@ -43,7 +39,6 @@
                 // Simulate data retrieval from web control
                 const jsonString = $("#hiddenVar001").getValue(); 
                 jsonData = JSON.parse(jsonString);
-                drawChart1();
                 drawChart2();
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -53,81 +48,6 @@
         setTimeout(loadDataFromWebControl, 1000);
 
         let jsonData;
-
-        function drawChart1() {
-            if (!jsonData || jsonData.length === 0) {
-                console.error("No data available!");
-                return;
-            }
-
-            const groupedData = {};
-            jsonData.forEach(entry => {
-                const date = entry.تاریخ;
-                const shift = entry.شیفت;
-                const drillingAmount = parseFloat(entry["میزان حفاری"]);
-
-                if (!groupedData[date]) {
-                    groupedData[date] = {};
-                }
-                groupedData[date][shift] = drillingAmount;
-            });
-
-            const dates = Object.keys(groupedData).sort((a, b) => new Date(a) - new Date(b));
-            const shifts = [...new Set(jsonData.map(entry => entry.شیفت))];
-            const shiftColors = {
-                                    "DAY": "rgba(255, 99, 132, 0.6)",    // Light Red  
-                                    "NIGHT": "rgba(54, 162, 235, 0.6)",  // Light Blue  
-                                    "NULL": "rgba(101, 67, 33, 0.8)"     // Dark Brown  
-                                };
-
-            const datasets = shifts.map(shift => ({
-                label: shift,
-                data: dates.map(date => groupedData[date][shift] || 0),
-                backgroundColor: dates.map(date => 
-                    shift in groupedData[date] ? shiftColors[shift] : shiftColors["NULL"]
-                ),
-                borderWidth: 1
-            }));
-
-            // const datasets = shifts.map(shift => ({
-            //     label: shift,
-            //     data: dates.map(date => groupedData[date][shift] || 0),
-            //     backgroundColor: `rgba(${Math.random()*255},${Math.random()*255},${Math.random()*255},0.6)`,
-            //    // backgroundColor: `rgba(${Math.random()*255},${Math.random()*255},${Math.random()*255},0.6)`,
-            //     borderWidth: 1
-            // }));
-
-            const totals = dates.map(date => Object.values(groupedData[date]).reduce((sum, val) => sum + val, 0));
-
-            datasets.push({
-                label: 'مجموع روزانه',
-                data: totals,
-                type: 'line',
-                borderColor: 'rgba(255, 99, 132, 0.9)',
-                borderWidth: 3,
-                fill: false
-            });
-
-            const ctx = document.getElementById('myChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: { labels: dates, datasets: datasets },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            stacked: true,
-                            title: { display: true, text: 'میزان حفاری (متر)', font: { family: 'B Nazanin', size: 18 } }
-                        },
-                        x: {
-                            stacked: true,
-                            title: { display: true, text: 'تاریخ', font: { family: 'B Nazanin', size: 18 } }
-                        }
-                    },
-                    plugins: { legend: { display: true } }
-                }
-            });
-        }
 
         function drawChart2() {
             if (!jsonData || jsonData.length === 0) {
