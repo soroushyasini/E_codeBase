@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Drilling Progress</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; }
+  </style>
+</head>
+<body>
+  <div style="width: 80%; height: 600px; margin: 0 auto;">
+    <canvas id="drillChart"></canvas>
+  </div>
+
+  <script>
+    // Function to fetch updated data from the WebControl
+    function loadDataFromWebControl() {
+      try {
+        const jsonString = $("#textVar002").getValue();  // Fetch data from WebControl
+        const jsonData = JSON.parse(jsonString);
+        drawChart(jsonData);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        const existingChart = Chart.getChart('drillChart'); // This will get the existing chart instance
+
+        if (existingChart) {
+         existingChart.destroy();  // Properly destroy the existing chart instance
+        }
+
+      }
+    }
+
+    // Function to draw the chart based on updated data
+    function drawChart(jsonData) {
+      if (!jsonData || jsonData.length === 0) {
+        console.error("No data available!");
+        return;
+      }
+      const processedData = processDrillingData(jsonData);
+      createDrillChart(processedData);
+    }
+
+    // Continuously check and update the chart every 2 seconds (or adjust the timing as needed)
+
+
+    // Process the drilling data (same as your original code)
+    function processDrillingData(data) {
+      const processed = data.map(entry => ({
+        ...entry,
+        depth: entry["عمق پایان"] - entry["عمق شروع"],
+        jalaaliDate: entry.تاریخ
+      }));
+
+      const dateMap = new Map();
+      processed.forEach(entry => {
+        const key = entry.jalaaliDate;
+        if (!dateMap.has(key)) {
+          dateMap.set(key, { DAY: 0, NIGHT: 0 });
+        }
+        if (entry.شیفت === "DAY") {
+          dateMap.get(key).DAY += entry.depth;
+        } else if (entry.شیفت === "NIGHT") {
+          dateMap.get(key).NIGHT += entry.depth;
+        }
+      });
+
+      const dates = Array.from(dateMap.keys()).sort();
+
+      const dayDaily = [];
+      const nightDaily = [];
+      dates.forEach(date => {
+        dayDaily.push(dateMap.get(date).DAY);
+        nightDaily.push(dateMap.get(date).NIGHT);
+      });
+
+      let runningDay = 0;
+      let runningNight = 0;
+      const dayData = [];
+      const nightData = [];
+
+      for (let i = 0; i < dates.length; i++) {
+        runningDay += dayDaily[i];
+        runningNight += nightDaily[i];
+
+        dayData.push(-runningDay);
+        nightData.push(-runningNight);
+      }
+
+      return { dates, dayData, nightData };
+    }
+
+    // Create the chart
+    function createDrillChart(data) {
+      const ctx = document.getElementById('drillChart').getContext('2d');
+
+      // Check if a chart already exists on this canvas and remove it
+      const existingChart = Chart.getChart('drillChart'); // This will get the existing chart instance
+
+      if (existingChart) {
+        existingChart.destroy();  // Properly destroy the existing chart instance
+      }
+
+      // Create a new chart
+      window.drillChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.dates,
+          datasets: [
+            {
+              label: 'DAY',
+              data: data.dayData,
+              backgroundColor: '#B56A34',
+              stack: 'drillingStack'
+            },
+            {
+              label: 'NIGHT',
+              data: data.nightData,
+              backgroundColor: '#347FB5',
+              stack: 'drillingStack'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              stacked: true,
+              ticks: {
+                autoSkip: false,
+                maxRotation: 45,
+                minRotation: 45
+              }
+            },
+            y: {
+              stacked: true,
+              ticks: {
+                callback: value => Math.abs(value)
+              },
+              title: {
+                display: true,
+                text: 'Cumulative Drilled Depth'
+              }
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: 'Cumulative Daily Drilling Progress by Shift (Downward)'
+            },
+            legend: {
+              position: 'top'
+            }
+          }
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

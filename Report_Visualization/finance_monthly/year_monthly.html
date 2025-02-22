@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>نمودار هزینه های ماهانه</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="myChart" style="width:100%; max-height:600px;"></canvas>
+
+    <script>
+        function loadDataFromWebControl() {
+            try {
+                const jsonString = $("#textVar02").getValue();
+                jsonData = JSON.parse(jsonString);
+                drawChart();
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+        setTimeout(loadDataFromWebControl, 1000);
+        
+        let jsonData;
+
+        const persianMonths = {
+            "01": "فروردین",
+            "02": "اردیبهشت",
+            "03": "خرداد",
+            "04": "تیر",
+            "05": "مرداد",
+            "06": "شهریور",
+            "07": "مهر",
+            "08": "آبان",
+            "09": "آذر",
+            "10": "دی",
+            "11": "بهمن",
+            "12": "اسفند"
+        };
+
+        // Predefined colors
+        const colors = ['#085578', '#538085', '#faf1e2', '#e3baaa', '#e47e8c', '#ffaa6a'];
+
+        function drawChart() {
+            if (!jsonData || jsonData.length === 0) {
+                console.error("No data available!");
+                return;
+            }
+
+            // Get unique months and codes
+            const months = [...new Set(jsonData.map(item => item.ماه))].sort();
+            const codes = [...new Set(jsonData.map(item => item.عنوان))];
+
+            // Prepare datasets
+            const datasets = codes.map((code, index) => {
+                const data = months.map(month => {
+                    const record = jsonData.find(item => item.ماه === month && item.عنوان === code);
+                    return record ? parseInt(record["مانده بدهکار"]) / 1000000 : 0; // Convert to millions
+                });
+
+                return {
+                    label: code,
+                    data: data,
+                    backgroundColor: colors[index % colors.length] // Use predefined colors in order
+                };
+            });
+
+            // Create chart
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: months.map(m => persianMonths[m]),
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            ticks: {
+                                font: {
+                                    family: 'IRANSans',
+                                    size: 14
+                                }
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'میلیون ریال',
+                                font: {
+                                    family: 'IRANSans',
+                                    size: 14
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    family: 'IRANSans',
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'نمودار هزینه های ماهانه',
+                            font: {
+                                family: 'IRANSans',
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
