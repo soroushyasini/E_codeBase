@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
+    <title>Letter Count Chart</title>
+    <style>
+        /* Apply the BNazanin font globally */
+        body {
+            font-family: 'B Nazanin', sans-serif;
+        }
+
+        #chart-container {
+            max-width: 800px; /* Set maximum width */
+            margin: auto; /* Center the chart */
+        }
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart-container">
+        <canvas id="letterChart"></canvas>
+    </div>
+    <script>
+        let jsonData1;
+
+        function populateJsonData1() {
+            const jsonString1 = $("#textVar003").getValue();
+            try {
+                jsonData1 = JSON.parse(jsonString1);
+                console.log("jsonData1 populated:", jsonData1);
+                drawChart1();
+            } catch (error) {
+                console.error("Invalid JSON1:", error);
+            }
+        }
+
+        function drawChart1() {
+            if (!jsonData1 || jsonData1.length === 0) {
+                console.error("jsonData1 is not populated yet!");
+                return;
+            }
+
+            // Prepare the data for stacked bars
+            const labels = []; // To store the names of 'دبیرخانه'
+            const incomingData = []; // To store "وارده" counts for each dabirkhaneh
+            const outgoingData = []; // To store "صادره" counts for each dabirkhaneh
+
+            // Iterate over the data and populate the arrays
+            jsonData1.forEach(item => {
+                // Check if the dabirkhaneh already exists in the labels
+                if (!labels.includes(item['دبیرخانه'])) {
+                    labels.push(item['دبیرخانه']);
+                    incomingData.push(0); // Initialize incoming data for this dabirkhaneh
+                    outgoingData.push(0); // Initialize outgoing data for this dabirkhaneh
+                }
+                const index = labels.indexOf(item['دبیرخانه']);
+
+                if (item['نوع نامه'] === 'وارده') {
+                    incomingData[index] += item['تعداد نامه'];
+                } else if (item['نوع نامه'] === 'صادره') {
+                    outgoingData[index] += item['تعداد نامه'];
+                }
+            });
+
+
+            // Prepare the datasets for the stacked bars
+            const datasets = [
+                {
+                    label: 'وارده',  // Incoming letters
+                    data: incomingData,
+                    borderColor: 'rgba(0, 102, 204, 1)',
+                    backgroundColor: 'rgba(0, 102, 204, 0.60)',
+                    borderWidth: 1,
+                    font: { family: 'B Nazanin', size: 14, weight: 'bold' },
+                    stack: 'stack1'
+                },
+                {
+                    label: 'صادره',  // Outgoing letters
+                    data: outgoingData,
+                    borderColor: 'rgba(205, 92, 92, 1)',
+                    backgroundColor: 'rgba(205, 92, 92, 0.60)',
+                    font: { family: 'B Nazanin', size: 14, weight: 'bold' },
+                    borderWidth: 1,
+                    stack: 'stack1'
+                }
+            ];
+
+            // Get the canvas context
+            const ctx = document.getElementById('letterChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stacked: true, // Enable stacking on y-axis
+                            ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' } } 
+                        },
+                        x: {
+                            stacked: true,
+                            // title: {
+                            //     display: true,
+                            //   text: 'دبیرخانه',
+                            //   font: { family: 'B Nazanin', size: 14, weight: 'bold' }
+                            // },
+                            ticks: { font: { family: 'B Nazanin', size: 14, weight: 'bold' } }  // Enable stacking on x-axis
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            font: { family: 'B Nazanin', size: 14, weight: 'bold' },
+                            bodyFont: { family: 'B Nazanin', size: 12, weight: 'bold' },
+                            titleFont: { family: 'B Nazanin', size: 14, weight: 'bold' }// Display legend at the top
+                        }
+                    }
+                }
+            });
+        }
+
+        setTimeout(() => { populateJsonData1(); }, 2000);
+    </script>
+</body>
+</html>

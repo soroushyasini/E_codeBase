@@ -4,83 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chart.js Example</title>
-    <!-- Include Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Include B Nazanin font from Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
-    <!-- Basic styling for the chart container -->
-    <style>
-        body {
-            font-family: 'B Nazanin', sans-serif;
-        }
-        #chart-container {
-            width: 80%;
-            margin: 20px auto;
+      <style>
+        canvas {
+            width: 100% !important;
+            height: auto !important;
         }
     </style>
 </head>
 <body>
-    <!-- Chart container -->
-    <div id="chart-container">
+
+
+      <!-- Second Chart -->
+    <div class="chart-container">
         <canvas id="dabirkhane_letters_2"></canvas>
     </div>
-
     <script>
-        // Variable to hold jsonData (will be populated dynamically)
-        let jsonData;
+        // First Chart Variables and Functions
 
-        // Function to draw the chart
-        function drawChart() {
-            // Ensure jsonData is populated
-            if (!jsonData || jsonData.length === 0) {
-                console.error("jsonData is not populated yet!");
+        // Second Chart Variables and Functions
+        let jsonData2;
+        function drawChart2() {
+            if (!jsonData2 || jsonData2.length === 0) {
+                console.error("jsonData2 is not populated yet!");
                 return;
             }
 
-            // Extract data from jsonData
-            const labels = jsonData.map(entry => entry["تاریخ"]);
-            const importData = jsonData.map(entry => entry["نامه ورودی"]);
-            const exportData = jsonData.map(entry => entry["نامه خروجی"]);
+            const labels = jsonData2.map(entry => entry["تاریخ"]);
+            const importData = jsonData2.map(entry => entry["نامه ورودی"]);
+            const exportData = jsonData2.map(entry => entry["نامه خروجی"]);
             const combinedData = importData.map((value, index) => value + exportData[index]);
 
-            // Get the chart canvas element
-            const ctx = document.getElementById('dabirkhane_letters_2').getContext('2d');
+            const ctx2 = document.getElementById('dabirkhane_letters_2').getContext('2d');
 
-            // Create the line chart
-            new Chart(ctx, {
-                type: 'line', // Use 'line' for a line plot
+            new Chart(ctx2, {
+                type: 'line',
                 data: {
-                    labels: labels, // X-axis: Dates
+                    labels: labels,
                     datasets: [
                         {
                             label: 'نامه های وارده',
-                            data: importData, // Y-axis: Import letters
-                            borderColor: 'rgba(0, 102, 204, 1)', // Blue color
+                            data: importData,
+                            borderColor: 'rgba(0, 102, 204, 1)',
                             backgroundColor: 'rgba(0, 102, 204, 0.15)',
-                            borderWidth: 2, // Line thickness
-                            fill: true, // Do not fill under the line
-                            tension: 0.4, // Smooth the line
-                            pointRadius: 0 // Remove circles at breakpoints
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0
                         },
                         {
                             label: 'نامه های صادره',
-                            data: exportData, // Y-axis: Export letters
-                            borderColor: 'rgba(205, 92, 92, 1)', // Indian red color
-                            backgroundColor: 'rgba(205, 92, 92, 0.15)', // Fill color under the line
-                            borderWidth: 2, // Line thickness
-                            fill: true, // Do not fill under the line
-                            tension: 0.4, // Smooth the line
-                            pointRadius: 0 // Remove circles at breakpoints
+                            data: exportData,
+                            borderColor: 'rgba(205, 92, 92, 1)',
+                            backgroundColor: 'rgba(205, 92, 92, 0.15)',
+                            borderWidth: 2,
+                            fill: true,
+                            font: { family: 'B Nazanin', size: 14, weight: 'bold' },
+                            tension: 0.4,
+                            pointRadius: 0
                         },
                         {
                             label: 'همه نامه ها',
-                            data: combinedData, // Y-axis: Combined letters
+                            data: combinedData,
                             borderColor: 'rgba(255, 152, 0, 1)',
-                            backgroundColor: 'rgba(255, 152, 0, 0.4)', // Orange color
-                            borderWidth: 2.5, // Line thickness
-                            fill: true, // Do not fill under the line
-                            tension: 0.4, // Smooth the line
-                            pointRadius: 0 // Remove circles at breakpoints
+                            backgroundColor: 'rgba(255, 152, 0, 0.4)',
+                            font: { family: 'B Nazanin', size: 14, weight: 'bold' },
+                            borderWidth: 2.5,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0
                         }
                     ]
                 },
@@ -91,84 +84,47 @@
                             title: {
                                 display: true,
                                 text: 'تعداد نامه',
-                                font: {
-                                    family: 'B Nazanin', // Apply B-Nazanin font
-                                    size: 14,
-                                    weight: 'bold' // Bold text
-                                }
+                                font: { family: 'B Nazanin', size: 14, weight: 'bold' }
                             },
-                            ticks: {
-                                font: {
-                                    family: 'B Nazanin', // Apply B-Nazanin font
-                                    size: 12,
-                                    weight: 'bold' // Bold text
-                                }
-                            }
+                            ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' } }
                         },
                         x: {
                             title: {
-                                display: true,
-                                text: 'تاریخ',
-                                font: {
-                                    family: 'B Nazanin', // Apply B-Nazanin font
-                                    size: 14,
-                                    weight: 'bold' // Bold text
-                                }
+                              //  display: true,
+                              //  text: 'تاریخ',
+                              //  font: { family: 'B Nazanin', size: 14, weight: 'bold' }
                             },
-                            ticks: {
-                                font: {
-                                    family: 'B Nazanin', // Apply B-Nazanin font
-                                    size: 12,
-                                    weight: 'bold' // Bold text
-                                }
-                            }
+                            ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' } }
                         }
                     },
                     plugins: {
                         tooltip: {
-                            enabled: true, // Enable tooltips
-                            mode: 'index', // Show tooltips for all datasets at the same index
-                            intersect: false, // Show tooltips even if the cursor is between points
-                            bodyFont: {
-                                family: 'B Nazanin', // Apply B-Nazanin font
-                                size: 12,
-                                weight: 'bold' // Bold text
-                            },
-                            titleFont: {
-                                family: 'B Nazanin', // Apply B-Nazanin font
-                                size: 14,
-                                weight: 'bold' // Bold text
-                            }
+                            enabled: true,
+                            mode: 'index',
+                            intersect: false,
+                            bodyFont: { family: 'B Nazanin', size: 12, weight: 'bold' },
+                            titleFont: { family: 'B Nazanin', size: 14, weight: 'bold' }
                         }
                     }
                 }
             });
 
-            // Debug: Confirm chart initialization
-            console.log("Chart initialized");
+            console.log("Chart 2 initialized");
         }
 
-        // Function to populate jsonData from the DynaForm field
-        function populateJsonDataFromDynaForm() {
-            // Simulate fetching JSON data from a DynaForm field
-            const jsonString = $("#textVar001").getValue(); // Fixed: Removed duplicate assignment
-
-            // Parse the JSON string
+        function populateJsonData2() {
+            const jsonString2 = $("#textVar002").getValue();
             try {
-                jsonData = JSON.parse(jsonString);
-                console.log("jsonData populated from DynaForm:", jsonData);
-
-                // Draw the chart
-                drawChart();
+                jsonData2 = JSON.parse(jsonString2);
+                console.log("jsonData2 populated:", jsonData2);
+                drawChart2();
             } catch (error) {
-                console.error("Invalid JSON:", error);
+                console.error("Invalid JSON2:", error);
             }
         }
 
-        // Simulate DynaForm field population (replace this with your actual DynaForm logic)
-        setTimeout(() => {
-            populateJsonDataFromDynaForm();
-        }, 2000); // Simulate a 2-second delay (replace this with your actual async logic)
+        setTimeout(() => { populateJsonData2(); }, 2000);
+
     </script>
 </body>
 </html>

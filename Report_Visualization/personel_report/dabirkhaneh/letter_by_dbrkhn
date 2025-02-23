@@ -1,0 +1,11 @@
+SELECT JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'تعداد نامه', letter_count,
+            'دبیرخانه', dabirkhaneh_id
+        )
+    ) AS letter_data
+FROM (
+    SELECT dabirkhaneh_id, COUNT(*) AS letter_count
+    FROM auto_letter
+    GROUP BY dabirkhaneh_id
+) AS subquery;
