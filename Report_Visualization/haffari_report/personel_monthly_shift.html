@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
     <title>Shift Count Chart</title>
     <style>
@@ -15,96 +17,117 @@
         <canvas id="shiftChart"></canvas>
       </div>
     
-      <script>
-        let jsonData1; // This will hold the dynamically populated JSON data
+<script>
+  // Register ChartDataLabels plugin
 
-        function populateJsonData1() {
-            const existingChart = Chart.getChart('drawChart1'); // This will get the existing chart instance
+  if (typeof ChartDataLabels !== 'undefined') {
+    Chart.register(ChartDataLabels);
+  } else {
+    console.error("ChartDataLabels plugin is not loaded.");
+  }
 
-      		if (existingChart) {
-        		existingChart.destroy();}  // Properly destroy the existing chart instance
-        
-            const jsonString1 = $("#textVar002").getValue(); // Assuming #textVar003 contains the JSON string
-            try {
-                jsonData1 = JSON.parse(jsonString1);
-                console.log("jsonData1 populated:", jsonData1);
-                drawChart1(); // Call drawChart1 once data is populated
-            } catch (error) {
-                console.error("Invalid JSON1:", error);
-					}
-            
-          
-        }
+  let jsonData1; // This will hold the dynamically populated JSON data
 
-        function drawChart1() {
-            if (!jsonData1 || jsonData1.length === 0) {
-                console.error("jsonData1 is not populated yet!");
-                return;
-            }
+  function populateJsonData1() {
+      const existingChart = Chart.getChart('drawChart1'); // This will get the existing chart instance
+      if (existingChart) {
+          existingChart.destroy(); // Properly destroy the existing chart instance
+      }
 
-            const labels = jsonData1.map(item => item['شخص']);
-            const nightShiftData = jsonData1.map(item => item['شیفت شب']);
-            const dayShiftData = jsonData1.map(item => item['شیفت روز']);
+      const jsonString1 = $("#textVar002").getValue(); // Assuming #textVar002 contains the JSON string
+      try {
+          jsonData1 = JSON.parse(jsonString1);
+          console.log("jsonData1 populated:", jsonData1);
+          drawChart1(); // Call drawChart1 once data is populated
+      } catch (error) {
+          console.error("Invalid JSON1:", error);
+      }
+  }
 
-            // Colors for night and day shifts
-            const nightShiftColor = 'rgba(0, 102, 204, 0.60)'; // Vanilla for night shift
-            const dayShiftColor = 'rgba(205, 92, 92, 0.80)'; // Atomic Tangerine for day shift
+  function drawChart1() {
+      if (!jsonData1 || jsonData1.length === 0) {
+          console.error("jsonData1 is not populated yet!");
+          return;
+      }
 
-            const datasets = [
-                {
-                    label: 'شیفت شب',
-                    data: nightShiftData,
-                    backgroundColor: nightShiftColor,
-                    borderColor: nightShiftColor,
-                    borderWidth: 1,
-                    stack: 'stack1'
-                },
-                {
-                    label: 'شیفت روز',
-                    data: dayShiftData,
-                    backgroundColor: dayShiftColor,
-                    borderColor: dayShiftColor,
-                    borderWidth: 1,
-                    stack: 'stack1'
-                }
-            ];
+      const labels = jsonData1.map(item => item['شخص']);
+      const nightShiftData = jsonData1.map(item => item['شیفت شب']);
+      const dayShiftData = jsonData1.map(item => item['شیفت روز']);
+      const totalShifts = jsonData1.map(item => item['شیفت شب'] + item['شیفت روز']);
 
-            // Get the canvas context for the chart
-            const ctx = document.getElementById('shiftChart').getContext('2d');
-            const existingChart = Chart.getChart('shiftChart'); // This will get the existing chart instance
+      // Colors for night and day shifts
+      const nightShiftColor = 'rgba(0, 102, 204, 0.60)';
+      const dayShiftColor = 'rgba(205, 92, 92, 0.80)';
 
-            if (existingChart) {
-                existingChart.destroy();  // Properly destroy the existing chart instance
-                }
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            stacked: true // Enable stacking on y-axis
-                        },
-                        x: {
-                            stacked: true // Enable stacking on x-axis
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        }
-                    }
-                }
-            });
-        }
+      const datasets = [
+          {
+              label: 'شیفت شب',
+              data: nightShiftData,
+              backgroundColor: nightShiftColor,
+              borderColor: nightShiftColor,
+              borderWidth: 1,
+              stack: 'stack1'
+          },
+          {
+              label: 'شیفت روز',
+              data: dayShiftData,
+              backgroundColor: dayShiftColor,
+              borderColor: dayShiftColor,
+              borderWidth: 1,
+              stack: 'stack1'
+          }
+      ];
 
-        // Trigger the population of JSON data when needed
-        //setTimeout(() => { populateJsonData1(); }, 2000); // For example, to simulate delayed loading
-    </script>
+      // Get the canvas context for the chart
+      const ctx = document.getElementById('shiftChart').getContext('2d');
+      const existingChart = Chart.getChart('shiftChart');
+      if (existingChart) {
+          existingChart.destroy();  // Properly destroy the existing chart instance
+      }
+      new Chart(ctx, {
+          plugins: [ChartDataLabels],
+          type: 'bar',
+          data: {
+              labels: labels,
+              datasets: datasets
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                  y: {
+                      beginAtZero: true,
+                      stacked: true
+                  },
+                  x: {
+                      stacked: true
+                  }
+              },
+              plugins: {
+                  legend: {
+                      position: 'top'
+                  },
+                  datalabels: { // Enable datalabels to show the total shift count
+                      anchor: 'end', 
+                      align: 'start',
+                      color: 'black',
+                      font: {
+                          weight: 'bold',
+                          size: 14
+                      },
+                      formatter: function(value, context) {
+                          // Only show the total for the top dataset to avoid duplication
+                          if (context.datasetIndex === context.chart.data.datasets.length - 1) {
+                              return totalShifts[context.dataIndex];
+                          }
+                          return '';
+                      }
+                  }
+              }
+          },
+          // Activate the plugin
+      });
+  }
+</script>
 </body>
 </html>
