@@ -21,7 +21,7 @@
   // Register ChartDataLabels plugin
 
   if (typeof ChartDataLabels !== 'undefined') {
-    Chart.register(ChartDataLabels);
+
   } else {
     console.error("ChartDataLabels plugin is not loaded.");
   }
@@ -29,7 +29,8 @@
   let jsonData1; // This will hold the dynamically populated JSON data
 
   function populateJsonData1() {
-      const existingChart = Chart.getChart('drawChart1'); // This will get the existing chart instance
+      const existingChart = Chart.getChart('drawChart1');
+     // This will get the existing chart instance
       if (existingChart) {
           existingChart.destroy(); // Properly destroy the existing chart instance
       }
@@ -84,6 +85,7 @@
       if (existingChart) {
           existingChart.destroy();  // Properly destroy the existing chart instance
       }
+
       new Chart(ctx, {
           plugins: [ChartDataLabels],
           type: 'bar',
@@ -108,24 +110,24 @@
                       position: 'top'
                   },
                   datalabels: { // Enable datalabels to show the total shift count
-                      anchor: 'end', 
-                      align: 'start',
+                      anchor: 'start', 
+                      align: 'center',
                       color: 'black',
                       font: {
                           weight: 'bold',
                           size: 14
                       },
-                      formatter: function(value, context) {
-                          // Only show the total for the top dataset to avoid duplication
-                          if (context.datasetIndex === context.chart.data.datasets.length - 1) {
-                              return totalShifts[context.dataIndex];
-                          }
-                          return '';
-                      }
+                offset: 10,
+                formatter: function(value, context) {
+                    if (context.datasetIndex === 0) {
+                        return totalShifts[context.dataIndex];
+                    }
+                    return '';
+                }
                   }
               }
           },
-          // Activate the plugin
+
       });
   }
 </script>
