@@ -1,4 +1,4 @@
-SET @date_filter = '1403-10-%';  -- Change this to '1403-10-%' or any other pattern as needed
+@@date_filter = '1403-10-%';  -- Change this to '1403-10-%' or any other pattern as needed
 
 SELECT 
     JSON_ARRAYAGG(
@@ -13,7 +13,7 @@ FROM (
 WITH filtered_data AS (
     SELECT form_date, shift, sarparast, negahban, zaminshenas, driver, sar_haffar, haffar, kargar, komak_haffar, aux_kargar
     FROM prc_db_gozaresh_ruzane_copy2
-    WHERE form_date LIKE @date_filter
+    WHERE form_date LIKE @@date_filter
 ),
 numbers AS (
     SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5

@@ -19,14 +19,21 @@
         let jsonData1; // This will hold the dynamically populated JSON data
 
         function populateJsonData1() {
-            const jsonString1 = $("#json_parse_shift").getValue(); // Assuming #textVar003 contains the JSON string
+            const existingChart = Chart.getChart('drawChart1'); // This will get the existing chart instance
+
+      		if (existingChart) {
+        		existingChart.destroy();}  // Properly destroy the existing chart instance
+        
+            const jsonString1 = $("#textVar002").getValue(); // Assuming #textVar003 contains the JSON string
             try {
                 jsonData1 = JSON.parse(jsonString1);
                 console.log("jsonData1 populated:", jsonData1);
                 drawChart1(); // Call drawChart1 once data is populated
             } catch (error) {
                 console.error("Invalid JSON1:", error);
-            }
+					}
+            
+          
         }
 
         function drawChart1() {
@@ -64,6 +71,11 @@
 
             // Get the canvas context for the chart
             const ctx = document.getElementById('shiftChart').getContext('2d');
+            const existingChart = Chart.getChart('shiftChart'); // This will get the existing chart instance
+
+            if (existingChart) {
+                existingChart.destroy();  // Properly destroy the existing chart instance
+                }
             new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -92,7 +104,7 @@
         }
 
         // Trigger the population of JSON data when needed
-        setTimeout(() => { populateJsonData1(); }, 2000); // For example, to simulate delayed loading
+        //setTimeout(() => { populateJsonData1(); }, 2000); // For example, to simulate delayed loading
     </script>
 </body>
 </html>
