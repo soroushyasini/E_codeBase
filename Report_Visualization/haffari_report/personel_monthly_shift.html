@@ -99,10 +99,17 @@
               scales: {
                   y: {
                       beginAtZero: true,
-                      stacked: true
+                      stacked: true,
+                      title: {
+                                display: true,
+                                text: 'تعداد شیفت ماهانه',
+                                font: { family: 'B Nazanin', size: 14, weight: 'bold' }
+                            },
+                            ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' } }
                   },
                   x: {
-                      stacked: true
+                      stacked: true,
+                      ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' } }
                   }
               },
               plugins: {
@@ -110,20 +117,18 @@
                       position: 'top'
                   },
                   datalabels: { // Enable datalabels to show the total shift count
-                      anchor: 'start', 
-                      align: 'center',
-                      color: 'black',
-                      font: {
-                          weight: 'bold',
-                          size: 14
-                      },
-                offset: 10,
-                formatter: function(value, context) {
-                    if (context.datasetIndex === 0) {
-                        return totalShifts[context.dataIndex];
+                      anchor: 'start',
+                      clamp : true,
+                      align: 'top',
+                      color: '#444444',
+                      font: { family: 'B Nazanin', size: 18, weight: 'bold' },
+                offset: 5,
+                    formatter: function(value, context) {
+                        if (context.datasetIndex === 0) {
+                            return totalShifts[context.dataIndex];
+                        }
+                        return '';
                     }
-                    return '';
-                }
                   }
               }
           },

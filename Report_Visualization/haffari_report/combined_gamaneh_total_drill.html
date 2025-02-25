@@ -1,104 +1,464 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drilling Progress Charts</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'BNazanin', sans-serif;
-            text-align: center;
-        }
-        .chart-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .chart-box {
-            width: 75%;
-            min-width: 400px;
-        }
-    </style>
+  <title>Drilling Progress</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; }
+  </style>
 </head>
 <body>
+  <div style="width: 80%; height: 600px; margin: 0 auto;">
+    <canvas id="drillChart"></canvas>
+  </div>
 
-    <h3>اطلاعات حفاری پروژه راه چمن</h3>
-    
-    <div class="chart-container">
-        <div class="chart-box">
-            <h4>عمق گمانه</h4>
-            <canvas id="drillingChart"></canvas>
-        </div>
-    </div>
-
-    <script>
-        function loadDataFromWebControl() {
-            try {
-                // Simulate data retrieval from web control
-                const jsonString = $("#hiddenVar001").getValue(); 
-                jsonData = JSON.parse(jsonString);
-                drawChart2();
-            } catch (error) {
-                console.error('Error loading data:', error);
-            }
+  <script>
+    function loadDataFromWebControl() {
+      try {
+        const jsonString = $("#textVar002").getValue();
+        const jsonData = JSON.parse(jsonString);
+        drawChart(jsonData);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        const existingChart = Chart.getChart('drillChart');
+        if (existingChart) {
+         existingChart.destroy();
         }
+      }
+    }
 
-        setTimeout(loadDataFromWebControl, 1000);
+    function drawChart(jsonData) {
+      if (!jsonData || jsonData.length === 0) {
+        console.error("No data available!");
+        return;
+      }
+      const processedData = processDrillingData(jsonData);
+      createDrillChart(processedData);
+    }
 
-        let jsonData;
-
-        function drawChart2() {
-            if (!jsonData || jsonData.length === 0) {
-                console.error("No data available!");
-                return;
-            }
-
-            const groupedData = {};
-            jsonData.forEach(entry => {
-                const borehole = entry.گمانه;
-                const startDepth = parseFloat(entry["عمق شروع"]);
-                const endDepth = parseFloat(entry["عمق پایان"]);
-                const drillingAmount = startDepth - endDepth; 
-
-                if (!groupedData[borehole]) {
-                    groupedData[borehole] = [];
-                }
-                groupedData[borehole].push({ startDepth: -startDepth, endDepth: -endDepth, drillingAmount });
-            });
-
-            const boreholes = Object.keys(groupedData);
-
-            const datasets = boreholes.map((borehole, index) => ({
-                label: borehole,
-                data: groupedData[borehole].map(d => ({ x: borehole, y: [d.startDepth, d.endDepth] })),
-                backgroundColor: index % 2 === 0 ? "rgba(54, 162, 235, 0.7)" : "rgba(255, 99, 132, 0.7)",
-                borderColor: "black",
-                borderWidth: 1,
-                type: "bar"
-            }));
-
-            const ctx = document.getElementById('drillingChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: { labels: boreholes, datasets: datasets },
-                options: {
-                    indexAxis: 'x',
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            title: { display: true, text: 'عمق حفاری (متر)', font: { family: 'B Nazanin', size: 18 } }
-                        },
-                        x: {
-                            title: { display: true, text: 'گمانه', font: { family: 'B Nazanin', size: 18 } }
-                        }
-                    },
-                    plugins: { legend: { display: true } }
-                }
-            });
+    function processDrillingData(data) {
+      const processed = data.map(entry => ({
+        ...entry,
+        depth: entry["عمق پایان"] - entry["عمق شروع"],
+        jalaaliDate: entry.تاریخ
+      }));
+      const dateMap = new Map();
+      processed.forEach(entry => {
+        const key = entry.jalaaliDate;
+        if (!dateMap.has(key)) {
+          dateMap.set(key, { DAY: 0, NIGHT: 0 });
         }
-    </script>
+        if (entry.شیفت === "DAY") {
+          dateMap.get(key).DAY += entry.depth;
+        } else if (entry.شیفت === "NIGHT") {
+          dateMap.get(key).NIGHT += entry.depth;
+        }
+      });
 
+      const dates = Array.from(dateMap.keys()).sort();
+
+      const dayDaily = [];
+      const nightDaily = [];
+      const dailyTotals = []; // New array for daily totals
+      dates.forEach(date => {
+        const dayAmount = dateMap.get(date).DAY;
+        const nightAmount = dateMap.get(date).NIGHT;
+        dayDaily.push(dayAmount);
+        nightDaily.push(nightAmount);
+        dailyTotals.push(dayAmount + nightAmount); // Calculate daily total
+      });
+
+      let runningDay = 0;
+      let runningNight = 0;
+      const dayData = [];
+      const nightData = [];
+
+      for (let i = 0; i < dates.length; i++) {
+        runningDay += dayDaily[i];
+        runningNight += nightDaily[i];
+        dayData.push(-runningDay);
+        nightData.push(-runningNight);
+      }
+
+      return { dates, dayData, nightData, dailyTotals };
+    }
+
+    function createDrillChart(data) {
+      const ctx = document.getElementById('drillChart').getContext('2d');
+      const gamaneh_name = $("#gamaneh").getValue();
+      const existingChart = Chart.getChart('drillChart');
+
+      if (existingChart) {
+        existingChart.destroy();
+      }
+
+      window.drillChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.dates,
+          datasets: [
+            {
+              label: 'روز',
+              data: data.dayData,
+              backgroundColor: '#B56A34',
+              stack: 'drillingStack',
+              order: 2
+            },
+            {
+              label: 'شب',
+              data: data.nightData,
+              backgroundColor: '#347FB5',
+              stack: 'drillingStack',
+              order: 2
+            },
+            {
+              label: 'حفاری روزانه',
+              type: 'line', // Add line chart type
+              data: data.dailyTotals,
+              borderColor: 'rgba(255, 0, 0,1)', // Red line (you can change this)
+              backgroundColor : 'rgba(255, 0, 0, 0.2)',
+              borderWidth: 2,
+              fill: true,
+              yAxisID: 'y2', // Use secondary y-axis
+              tension: 0.1, // Slight curve in the line
+              order: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          barPercentage: 0.99,
+          categoryPercentage: 0.99,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              stacked: true,
+              font: { family: 'B Nazanin', size: 12, weight: 'bold' },
+              ticks: {
+                autoSkip: false,
+                maxRotation: 45,
+                minRotation: 45,
+                font: { family: 'B Nazanin', size: 15, weight: 'bold' }
+              }
+            },
+            y: {
+              stacked: true,
+              ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' },
+                callback: value => Math.abs(value)
+              },
+              title: {
+                display: true,
+                font: { family: 'B Nazanin', size: 12, weight: 'bold' },
+                text: 'عمق حفاری (تجمعی)',
+                ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' } }
+              }
+            },
+            y2: { // Add secondary y-axis for the line
+              position: 'right',
+              
+              ticks: {
+                beginAtZero: true,
+                font: { family: 'B Nazanin', size: 12, weight: 'bold' }
+              },
+              title: {
+                display: true,
+                text: ' حفاری روزانه',
+                font: { family: 'B Nazanin', size: 14, weight: 'bold' },
+                ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' } }
+              },
+              grid: {
+                drawOnChartArea: false // Avoid overlapping grid lines
+              }
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              font: { family: 'B Nazanin', size: 18, weight: 'bold' },
+              text: `میزان پیشرفت روزانه حفاری گمانه ${gamaneh_name}`
+            },
+            legend: {
+                    position: 'top',
+                    align: 'end', // Aligns items vertically in the middle
+                    labels: {
+                        boxWidth: 20, // Width of the legend color boxes
+                        font: { family: 'B Nazanin', size: 12, weight: 'bold' }
+                    }
+                    }
+          }
+        }
+      });
+    }
+</script>
+  </script>
+
+  <!-- Example hidden input with JSON data -->
+  <!--
+  <input type="hidden" id="textVar002" value='[
+    {"شیفت": "DAY", "تاریخ": "1403-10-23", "گمانه": "RCH15", "عمق شروع": 17.0, "عمق پایان": 27.0},
+    {"شیفت": "NIGHT", "تاریخ": "1403-10-23", "گمانه": "RCH15", "عمق شروع": 27.0, "عمق پایان": 40.0},
+    {"شیفت": "DAY", "تاریخ": "1403-10-24", "گمانه": "RCH15", "عمق شروع": 40.0, "عمق پایان": 50.0},
+    {"شیفت": "NIGHT", "تاریخ": "1403-10-24", "گمانه": "RCH15", "عمق شروع": 50.0, "عمق پایان": 65.0}
+  ]'>
+  -->
+</body>
+</html>
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Drilling Progress</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'B Nazanin', sans-serif; text-align: center; }
+    .chart-container {
+      position: relative;
+      width: 80%;
+      height: 600px;
+      margin: 0 auto;
+    }
+    .legend-container {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      margin: 10px auto;
+    }
+    .legend-left {
+      display: flex;
+      gap: 15px;
+      margin-left: 15px; /* Added 15px left margin */
+    }
+    .legend-right {
+      display: flex;
+      margin-right: 15px; /* Added 15px right margin */
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .legend-item span {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="legend-container">
+    <div class="legend-left" id="legend-left"></div>
+    <div class="legend-right" id="legend-right"></div>
+  </div>
+  <div class="chart-container">
+    <canvas id="drillChart"></canvas>
+  </div>
+
+  <script>
+    function loadDataFromWebControl() {
+      try {
+        const jsonString = $("#textVar002").getValue();
+        const jsonData = JSON.parse(jsonString);
+        drawChart(jsonData);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        const existingChart = Chart.getChart('drillChart');
+        if (existingChart) {
+          existingChart.destroy();
+        }
+      }
+    }
+
+    function drawChart(jsonData) {
+      if (!jsonData || jsonData.length === 0) {
+        console.error("No data available!");
+        return;
+      }
+      const processedData = processDrillingData(jsonData);
+      createDrillChart(processedData);
+    }
+
+    function processDrillingData(data) {
+      const processed = data.map(entry => ({
+        ...entry,
+        depth: entry["عمق پایان"] - entry["عمق شروع"],
+        jalaaliDate: entry.تاریخ
+      }));
+      const dateMap = new Map();
+      processed.forEach(entry => {
+        const key = entry.jalaaliDate;
+        if (!dateMap.has(key)) {
+          dateMap.set(key, { DAY: 0, NIGHT: 0 });
+        }
+        if (entry.شیفت === "DAY") {
+          dateMap.get(key).DAY += entry.depth;
+        } else if (entry.شیفت === "NIGHT") {
+          dateMap.get(key).NIGHT += entry.depth;
+        }
+      });
+
+      const dates = Array.from(dateMap.keys()).sort();
+      const dayDaily = [];
+      const nightDaily = [];
+      const dailyTotals = [];
+      dates.forEach(date => {
+        const dayAmount = dateMap.get(date).DAY;
+        const nightAmount = dateMap.get(date).NIGHT;
+        dayDaily.push(dayAmount);
+        nightDaily.push(nightAmount);
+        dailyTotals.push(dayAmount + nightAmount);
+      });
+
+      let runningDay = 0;
+      let runningNight = 0;
+      const dayData = [];
+      const nightData = [];
+
+      for (let i = 0; i < dates.length; i++) {
+        runningDay += dayDaily[i];
+        runningNight += nightDaily[i];
+        dayData.push(-runningDay);
+        nightData.push(-runningNight);
+      }
+
+      return { dates, dayData, nightData, dailyTotals };
+    }
+
+    function createDrillChart(data) {
+      const ctx = document.getElementById('drillChart').getContext('2d');
+      const gamaneh_name = $("#gamaneh").getValue();
+      const existingChart = Chart.getChart('drillChart');
+
+      if (existingChart) {
+        existingChart.destroy();
+      }
+
+      window.drillChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.dates,
+          datasets: [
+            {
+              label: 'روز',
+              data: data.dayData,
+              backgroundColor: '#B56A34',
+              stack: 'drillingStack',
+              order: 2
+            },
+            {
+              label: 'شب',
+              data: data.nightData,
+              backgroundColor: '#347FB5',
+              stack: 'drillingStack',
+              order: 2
+            },
+            {
+              label: 'حفاری روزانه',
+              type: 'line',
+              data: data.dailyTotals,
+              borderColor: 'rgba(255, 0, 0, 1)',
+              backgroundColor: 'rgba(255, 0, 0, 0.2)',
+              borderWidth: 2,
+              fill: true,
+              yAxisID: 'y2',
+              tension: 0.1,
+              order: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          barPercentage: 0.99,
+          categoryPercentage: 0.99,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              stacked: true,
+              ticks: {
+                autoSkip: false,
+                maxRotation: 45,
+                minRotation: 45,
+                font: { family: 'B Nazanin', size: 15, weight: 'bold' }
+              }
+            },
+            y: {
+              stacked: true,
+              ticks: {
+                font: { family: 'B Nazanin', size: 12, weight: 'bold' },
+                callback: value => Math.abs(value)
+              },
+              title: {
+                display: true,
+                font: { family: 'B Nazanin', size: 12, weight: 'bold' },
+                text: 'عمق حفاری (تجمعی)'
+              }
+            },
+            y2: {
+              position: 'right',
+              ticks: {
+                beginAtZero: true,
+                font: { family: 'B Nazanin', size: 12, weight: 'bold' }
+              },
+              title: {
+                display: true,
+                text: 'حفاری روزانه',
+                font: { family: 'B Nazanin', size: 14, weight: 'bold' }
+              },
+              grid: {
+                drawOnChartArea: false
+              }
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              font: { family: 'B Nazanin', size: 18, weight: 'bold' },
+              text: `میزان پیشرفت روزانه حفاری گمانه ${gamaneh_name}`
+            },
+            legend: {
+              display: false // Disable default legend
+            }
+          }
+        }
+      });
+
+      // Create custom legend
+      const chart = window.drillChart;
+      const leftLegend = document.getElementById('legend-left');
+      const rightLegend = document.getElementById('legend-right');
+      leftLegend.innerHTML = '';
+      rightLegend.innerHTML = '';
+
+      chart.data.datasets.forEach((dataset, i) => {
+        const legendItem = document.createElement('div');
+        legendItem.className = 'legend-item';
+        const colorBox = document.createElement('span');
+        colorBox.style.backgroundColor = dataset.backgroundColor;
+        const text = document.createTextNode(dataset.label);
+        legendItem.appendChild(colorBox);
+        legendItem.appendChild(text);
+
+        // Toggle dataset visibility on click
+        legendItem.onclick = () => {
+          const meta = chart.getDatasetMeta(i);
+          meta.hidden = meta.hidden === null ? true : null;
+          chart.update();
+        };
+
+        // Place "حفاری روزانه" on the left, others on the right (reversed)
+        if (dataset.label === 'حفاری روزانه') {
+          leftLegend.appendChild(legendItem);
+        } else {
+          rightLegend.appendChild(legendItem);
+        }
+      });
+    }
+  </script>
 </body>
 </html>
