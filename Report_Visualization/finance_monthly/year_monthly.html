@@ -2,11 +2,11 @@
 <html dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>نمودار هزینه های ماهانه</title>
+    <title> نمودار هزینه های ماهانه در سال 1402</title>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <canvas id="myChart" style="width:100%; max-height:600px;"></canvas>
+    <canvas id="myChart" style="width:100%; max-height:440px;"></canvas>
 
     <script>
         function loadDataFromWebControl() {
@@ -78,21 +78,19 @@
                         x: {
                             stacked: true,
                             ticks: {
-                                font: {
-                                    family: 'IRANSans',
-                                    size: 14
-                                }
+                                font: { family: 'B Nazanin', size: 14, weight: 'bold' }
                             }
                         },
                         y: {
                             stacked: true,
+                            
                             title: {
                                 display: true,
                                 text: 'میلیون ریال',
-                                font: {
-                                    family: 'IRANSans',
-                                    size: 14
-                                }
+                                font: { family: 'B Nazanin', size: 14, weight: 'bold' },                                        
+                            },
+                            ticks: {
+                                font: { family: 'B Nazanin', size: 16, weight: 'bold' }
                             }
                         }
                     },
@@ -100,19 +98,13 @@
                         legend: {
                             position: 'right',
                             labels: {
-                                font: {
-                                    family: 'IRANSans',
-                                    size: 12
-                                }
+                                font: { family: 'B Nazanin', size: 12, weight: 'bold' }
                             }
                         },
                         title: {
                             display: true,
-                            text: 'نمودار هزینه های ماهانه',
-                            font: {
-                                family: 'IRANSans',
-                                size: 16
-                            }
+                            text: 'نمودار هزینه های ماهانه در سال 1402',
+                            font: { family: 'B Nazanin', size: 18, weight: 'bold' }
                         }
                     }
                 }
