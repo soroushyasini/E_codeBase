@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    
 
     <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
     <title>Shift Count Chart</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-      </style>
     </head>
     <body>
       <div style="width: 80%; height: 440px; margin: 0 auto;">
@@ -18,13 +15,7 @@
       </div>
     
 <script>
-  // Register ChartDataLabels plugin
 
-  if (typeof ChartDataLabels !== 'undefined') {
-
-  } else {
-    console.error("ChartDataLabels plugin is not loaded.");
-  }
 
   let jsonData1; // This will hold the dynamically populated JSON data
 
@@ -51,10 +42,10 @@
           return;
       }
 
-      const labels = jsonData1.map(item => item['شخص']);
-      const nightShiftData = jsonData1.map(item => item['شیفت شب']);
-      const dayShiftData = jsonData1.map(item => item['شیفت روز']);
-      const totalShifts = jsonData1.map(item => item['شیفت شب'] + item['شیفت روز']);
+      const labels = jsonData1.map(item => item['دستگاه اجرایی']);
+      const nightShiftData = jsonData1.map(item => item['مناقصات']);
+      const dayShiftData = jsonData1.map(item => item['مزایدات']);
+      const totalShifts = jsonData1.map(item => item['مناقصات'] + item['مزایدات']);
 
       // Colors for night and day shifts
       const nightShiftColor = 'rgba(0, 102, 204, 0.60)';
@@ -62,7 +53,8 @@
 
       const datasets = [
           {
-              label: 'شیفت شب',
+              label: 'مناقصات',
+              font: { family: 'B Nazanin', size: 12, weight: 'bold' },
               data: nightShiftData,
               backgroundColor: nightShiftColor,
               borderColor: nightShiftColor,
@@ -70,8 +62,9 @@
               stack: 'stack1'
           },
           {
-              label: 'شیفت روز',
+              label: 'مزایدات',
               data: dayShiftData,
+              font: { family: 'B Nazanin', size: 12, weight: 'bold' },
               backgroundColor: dayShiftColor,
               borderColor: dayShiftColor,
               borderWidth: 1,
@@ -87,7 +80,6 @@
       }
 
       new Chart(ctx, {
-          plugins: [ChartDataLabels],
           type: 'bar',
           data: {
               labels: labels,
@@ -102,7 +94,7 @@
                       stacked: true,
                       title: {
                                 display: true,
-                                text: 'تعداد شیفت ماهانه',
+                                text: 'تعداد مزایدات و مناقصات',
                                 font: { family: 'B Nazanin', size: 14, weight: 'bold' }
                             },
                             ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' } }
@@ -113,25 +105,21 @@
                   }
               },
               plugins: {
-                  legend: {
-                      position: 'top'
-                  },
-                  datalabels: { // Enable datalabels to show the total shift count
-                      anchor: 'start',
-                      clamp : true,
-                      align: 'center',
-                      color: '#444444',
-                      font: { family: 'B Nazanin', size: 18, weight: 'bold' },
-                offset: 10,
-                    formatter: function(value, context) {
-                        if (context.datasetIndex === 0) {
-                            return totalShifts[context.dataIndex];
-                        }
-                        return '';
+                        tooltip: {
+                            enabled: true,
+                            mode: 'index',
+                            intersect: false,
+                            bodyFont: { family: 'B Nazanin', size: 12, weight: 'bold' },
+                            titleFont: { family: 'B Nazanin', size: 14, weight: 'bold' }
+                        },
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: { family: 'B Nazanin', size: 12, weight: 'bold' }
+                            }
+                        },
                     }
-                  }
-              }
-          },
+          }
 
       });
   }
