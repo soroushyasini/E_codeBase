@@ -36,10 +36,15 @@ function edit_record(id, grouh, onvan_amval, tarikh, pelak_amval, vasziyat_estef
 }
 
 // Create new record
-$("#button123").find("button").click(function() {
-    var value1 = $("#webcontrol1").getValue();
-    var value2 = $("#webcontrol2").getValue();
-    var temp = { value1: value1, value2: value2 };
+$("#create_record").find("button").click(function() {
+    var id = $("#record_id").getValue();
+    var grouh = $("#grouh").getValue();
+    var onvan_amval = $("#onvan_amval").getValue();
+    var tarikh = $("#tarikh").getValue();
+    var pelak_amval = $("#pelak_amval").getValue();
+    var vasziyat_estefade = $("#vasziyat_estefade").getValue();
+    var tahvil_girande = $("#tahvil_girande").getValue();
+    var temp = { id: id, grouh: grouh, onvan_amval: onvan_amval, tarikh: tarikh, pelak_amval: pelak_amval, vasziyat_estefade: vasziyat_estefade , tahvil_girande: tahvil_girande};
 
     console.log("Creating new record with data:", temp);
     $('#n2_ajax_loading').fadeIn();
@@ -54,8 +59,13 @@ $("#button123").find("button").click(function() {
         showMessage(msg.message, 'success', 5000, 'موفقیت');
         $('#n2_ajax_loading').fadeOut();
         $("#record_id").setValue('');
-        $("#webcontrol1").setValue('');
-        $("#webcontrol2").setValue('');
+        $("#grouh").setValue('');
+        $("#onvan_amval").setValue('');
+        $("#tarikh").setValue('');
+        $("#pelak_amval").setValue('');
+        $("#vasziyat_estefade").setValue('');
+        $("#tahvil_girande").setValue('');
+
         if (typeof Xcrud !== 'undefined' && typeof Xcrud.reload === 'function') {
             Xcrud.reload();
         }
@@ -73,11 +83,13 @@ $("#button_update").find("button").click(function() {
         showMessage('Please select a record to update first', 'error', 5000, 'خطا');
         return;
     }
-
-    var value1 = $("#webcontrol1").getValue();
-    var value2 = $("#webcontrol2").getValue();
-    var temp = { value1: value1, value2: value2, id: recordId };
-
+    var grouh = $("#grouh").getValue();
+    var onvan_amval = $("#onvan_amval").getValue();
+    var tarikh = $("#tarikh").getValue();
+    var pelak_amval = $("#pelak_amval").getValue();
+    var vasziyat_estefade = $("#vasziyat_estefade").getValue();
+    var tahvil_girande = $("#tahvil_girande").getValue();
+    var temp = { grouh: grouh, onvan_amval: onvan_amval, tarikh: tarikh, pelak_amval: pelak_amval, vasziyat_estefade: vasziyat_estefade , tahvil_girande: tahvil_girande, id: recordId};
     console.log("Updating record with data:", temp);
     $('#n2_ajax_loading').fadeIn();
 
@@ -91,8 +103,12 @@ $("#button_update").find("button").click(function() {
         showMessage(msg.message, 'success', 5000, 'موفقیت');
         $('#n2_ajax_loading').fadeOut();
         $("#record_id").setValue('');
-        $("#webcontrol1").setValue('');
-        $("#webcontrol2").setValue('');
+        $("#grouh").setValue('');
+        $("#onvan_amval").setValue('');
+        $("#tarikh").setValue('');
+        $("#pelak_amval").setValue('');
+        $("#vasziyat_estefade").setValue('');
+        $("#tahvil_girande").setValue('');
         if (typeof Xcrud !== 'undefined' && typeof Xcrud.reload === 'function') {
             Xcrud.reload();
         }
