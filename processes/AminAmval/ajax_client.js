@@ -7,7 +7,7 @@ var trig_uid = "51793206667820cb64bc291093112118"; // Replace with your actual t
 //grouh, onvan_amva, tarikh, pelak_amval, vasziyat_estefade, tahvil_girande
 hideArrow();
 appendAjaxLoading();
-
+grouh, onvan_amval, tedad, type, moshakhase, makan, sherkat, sanad, tarikh, pelak_amval, vasziyat_estefade, tahvil_girande
 // Custom function to handle Edit button click
 function edit_record(id, grouh, onvan_amval, tarikh, pelak_amval, vasziyat_estefade, tahvil_girande) {
     console.log("Editing record:", { id: id, grouh: grouh, onvan_amval: onvan_amval, tarikh: tarikh, pelak_amval: pelak_amval, vasziyat_estefade: vasziyat_estefade , tahvil_girande: tahvil_girande});
