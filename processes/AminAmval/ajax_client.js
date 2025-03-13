@@ -10,40 +10,41 @@ hideArrow();
 appendAjaxLoading();
 
 // Function to update XCRUD column titles
-function updateXcrudTitles() {
-    if ($('.xcrud-list').length) {
-        var columnTitles = [
-            '#',                // xcrud-num
-            'ID',               // id
-            'گروه کالا',       // grouh
-            'عنوان اموال',     // onvan_amval
-            'تعداد',           // tedad
-            'نوع',             // type
-            'مشخصه',           // moshakhase
-            'مکان',            // makan
-            'شرکت',            // sherkat
-            'سند',             // sanad
-            'تاریخ تحویل',     // n2_date(tarikh)
-            'پلاک اموال',      // pelak_amval
-            'وضعیت استفاده',  // vasziyat_estefade
-            'تحویل گیرنده',   // tahvil_girande
-            ''                  // actions column
-        ];
+// function updateXcrudTitles() {
+//     if ($('.xcrud-list').length) {
+//         var columnTitles = [
 
-        $('.xcrud-list thead tr.xcrud-th th').each(function(index) {
-            if (index < columnTitles.length) {
-                $(this).text(columnTitles[index]);
-            }
-        });
+//             'ID',               // id
+//             'گروه کالا',       // grouh
+//             'عنوان اموال',     // onvan_amval
+//             'تعداد',           // tedad
+//             'نوع',             // type
+//             'مشخصه',           // moshakhase
+//             'مکان',            // makan
+//             'شرکت',            // sherkat
+//             'سند',             // sanad
+//             'تاریخ تحویل',     // n2_date(tarikh)
+//             'پلاک اموال',      // pelak_amval
+//             'وضعیت استفاده',  // vasziyat_estefade
+//             'تحویل گیرنده',   // tahvil_girande
+//             ''                  // actions column
+//         ];
 
-        console.log("XCRUD column titles updated to Persian");
-    }
-}
+//         $('.xcrud-list thead tr.xcrud-th th').each(function(index) {
+//             if (index < columnTitles.length) {
+//                 $(this).text(columnTitles[index]);
+//             }
+//         });
+
+//         console.log("XCRUD column titles updated to Persian");
+//     }
+// }
 
 // Custom function to handle Edit button click
 function edit_record(id, grouh, onvan_amval, tedad, type, moshakhase, makan, sherkat, sanad, tarikh, pelak_amval, vasziyat_estefade, tahvil_girande) {
     console.log("Editing record:", { id, grouh, onvan_amval, tedad, type, moshakhase, makan, sherkat, sanad, tarikh, pelak_amval, vasziyat_estefade, tahvil_girande });
     try {
+        tarikh = (tarikh === "0000-00-00 00:00:00") ? "" : tarikh;
         $("#record_id").setValue(id || '');
         $("#grouh").setValue(grouh || '');
         $("#onvan_amval").setValue(onvan_amval || '');
@@ -215,18 +216,18 @@ $("#button_update").find("button").click(function() {
 });
 
 // Initialize and observe table updates
-$(document).ready(function() {
-    // Run initially
-    updateXcrudTitles();
+// $(document).ready(function() {
+//     // Run initially
+//     updateXcrudTitles();
 
-    // Set up MutationObserver to detect table reloads
-    var target = document.querySelector('#panel_grid .panel-body'); // Target the parent container
-    if (target) {
-        var observer = new MutationObserver(function(mutations) {
-            setTimeout(updateXcrudTitles, 100); // Small delay to ensure table is rendered
-        });
-        observer.observe(target, { childList: true, subtree: true });
-    } else {
-        console.warn("Target '#panel_grid .panel-body' not found initially. Using fallback method.");
-    }
-});
+//     // Set up MutationObserver to detect table reloads
+//     var target = document.querySelector('#panel_grid .panel-body'); // Target the parent container
+//     if (target) {
+//         var observer = new MutationObserver(function(mutations) {
+//             setTimeout(updateXcrudTitles, 100); // Small delay to ensure table is rendered
+//         });
+//         observer.observe(target, { childList: true, subtree: true });
+//     } else {
+//         console.warn("Target '#panel_grid .panel-body' not found initially. Using fallback method.");
+//     }
+// });
