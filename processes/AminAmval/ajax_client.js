@@ -40,6 +40,88 @@ appendAjaxLoading();
 //     }
 // }
 
+function search_table() {
+    // Collect values from web controls
+    var id = $("#record_id").getValue() || '';
+    var grouh = $("#grouh").getValue() || '';
+    var onvan_amval = $("#onvan_amval").getValue() || '';
+    var tedad = $("#tedad").getValue() || '';
+    var type = $("#type").getValue() || '';
+    var moshakhase = $("#moshakhase").getValue() || '';
+    var makan = $("#makan").getValue() || '';
+    var sherkat = $("#sherkat").getValue() || '';
+    var sanad = $("#sanad").getValue() || '';
+    var tarikh = $("#tarikh").getValue() || '';
+    var pelak_amval = $("#pelak_amval").getValue() || '';
+    var vasziyat_estefade = $("#vasziyat_estefade").getValue() || '';
+    var tahvil_girande = $("#tahvil_girande").getValue() || '';
+
+    console.log("Searching table with:", {
+        id, grouh, onvan_amval, tedad, type, moshakhase, makan, 
+        sherkat, sanad, tarikh, pelak_amval, vasziyat_estefade, tahvil_girande
+    });
+
+    // Show loading indicator
+    $('#n2_ajax_loading').fadeIn();
+
+    // Check if Xcrud is available
+    if (typeof Xcrud !== 'undefined' && typeof Xcrud.reload === 'function') {
+        // Build filter conditions
+        var filters = [];
+        if (id) filters.push({ field: 'id', value: id, type: 'equals' });
+        if (grouh) filters.push({ field: 'grouh', value: grouh, type: 'like' });
+        if (onvan_amval) filters.push({ field: 'onvan_amval', value: onvan_amval, type: 'like' });
+        if (tedad) filters.push({ field: 'tedad', value: tedad, type: 'equals' });
+        if (type) filters.push({ field: 'type', value: type, type: 'like' });
+        if (moshakhase) filters.push({ field: 'moshakhase', value: moshakhase, type: 'like' });
+        if (makan) filters.push({ field: 'makan', value: makan, type: 'like' });
+        if (sherkat) filters.push({ field: 'sherkat', value: sherkat, type: 'like' });
+        if (sanad) filters.push({ field: 'sanad', value: sanad, type: 'like' });
+        if (tarikh) filters.push({ field: 'tarikh', value: tarikh, type: 'equals' });
+        if (pelak_amval) filters.push({ field: 'pelak_amval', value: pelak_amval, type: 'like' });
+        if (vasziyat_estefade) filters.push({ field: 'vasziyat_estefade', value: vasziyat_estefade, type: 'like' });
+        if (tahvil_girande) filters.push({ field: 'tahvil_girande', value: tahvil_girande, type: 'like' });
+
+        // Since Xcrud doesn’t have a direct set_filter, we’ll use its search mechanism
+        if (filters.length > 0) {
+            // For simplicity, combine all filters into a single "phrase" for Xcrud’s global search
+            var searchPhrase = filters.map(f => f.value).join(" ");
+            var searchFields = filters.map(f => f.field).join(",");
+
+            // Trigger Xcrud reload with search parameters
+            $.ajax({
+                url: Xcrud.config('url'), // Xcrud’s internal URL (adjust if needed)
+                type: 'POST',
+                data: {
+                    task: 'search',
+                    phrase: searchPhrase,
+                    fields: searchFields,
+                    search: 1
+                },
+                success: function(response) {
+                    // Reload the table with filtered data
+                    Xcrud.reload();
+                    console.log("Table filtered successfully");
+                    $('#n2_ajax_loading').fadeOut();
+                   // setTimeout(updateXcrudTitles, 500); // Update titles after reload
+                },
+                error: function(xhr, status, error) {
+                    console.log("Search Error:", xhr.responseText, status, error);
+                    showMessage('Error: ' + xhr.responseText, 'error', 5000, 'خطا');
+                    $('#n2_ajax_loading').fadeOut();
+                }
+            });
+        } else {
+            // If no filters, just reload the full table
+            Xcrud.reload();
+            $('#n2_ajax_loading').fadeOut();
+        }
+    } else {
+        console.warn("Xcrud not available or reload function missing");
+        showMessage('Xcrud is not initialized properly', 'error', 5000, 'خطا');
+        $('#n2_ajax_loading').fadeOut();
+    }
+}
 // Custom function to handle Edit button click
 function edit_record(id, grouh, onvan_amval, tedad, type, moshakhase, makan, sherkat, sanad, tarikh, pelak_amval, vasziyat_estefade, tahvil_girande) {
     console.log("Editing record:", { id, grouh, onvan_amval, tedad, type, moshakhase, makan, sherkat, sanad, tarikh, pelak_amval, vasziyat_estefade, tahvil_girande });
@@ -135,7 +217,7 @@ $("#create_record").find("button").click(function() {
         $("#tahvil_girande").setValue('');
         if (typeof Xcrud !== 'undefined' && typeof Xcrud.reload === 'function') {
             Xcrud.reload();
-            setTimeout(updateXcrudTitles, 500); // Fallback: Update titles after reload
+           // setTimeout(updateXcrudTitles, 500); // Fallback: Update titles after reload
         }
     }).fail(function(xhr, status, error) {
         console.log("Create Error:", xhr.responseText, status, error);
@@ -206,13 +288,16 @@ $("#button_update").find("button").click(function() {
         $("#tahvil_girande").setValue('');
         if (typeof Xcrud !== 'undefined' && typeof Xcrud.reload === 'function') {
             Xcrud.reload();
-            setTimeout(updateXcrudTitles, 500); // Fallback: Update titles after reload
+           // setTimeout(updateXcrudTitles, 500); // Fallback: Update titles after reload
         }
     }).fail(function(xhr, status, error) {
         console.log("Update Error:", xhr.responseText, status, error);
         showMessage('Error: ' + xhr.responseText, 'error', 5000, 'خطا');
         $('#n2_ajax_loading').fadeOut();
     });
+});
+$("#search_records").find("button").click(function() {
+    search_table();
 });
 
 // Initialize and observe table updates
