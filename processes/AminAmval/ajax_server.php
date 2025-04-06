@@ -20,6 +20,35 @@ function save_to_db($inputData) {
     $vasziyat_estefade = isset($inputData['vasziyat_estefade']) ? $inputData['vasziyat_estefade'] : '';
     $tahvil_girande = isset($inputData['tahvil_girande']) ? $inputData['tahvil_girande'] : '';
     
+    // Check for duplicate pelak_amval only if it's not empty
+    if (!empty($pelak_amval)) {
+        $check_sql = "SELECT COUNT(*) as count FROM prc_db_amin_amval WHERE pelak_amval = '" . addslashes($pelak_amval) . "'";
+        $check_result = executeQuery($check_sql);
+        
+        // Debug: Log the result of the check query
+        error_log("Check query result: " . print_r($check_result, true));
+        
+        if ($check_result === false) {
+            $output['message'] = 'Error: Failed to check for duplicates';
+            return $output;
+        }
+        
+        // Handle the nested array structure
+        if (is_array($check_result) && isset($check_result[1]) && is_array($check_result[1]) && isset($check_result[1]['count'])) {
+            $count = (int)$check_result[1]['count'];
+            error_log("Parsed count: " . $count);
+        } else {
+            $output['message'] = 'Error: Invalid response from duplicate check';
+            error_log("Unexpected structure: " . print_r($check_result, true));
+            return $output;
+        }
+        
+        if ($count > 0) {
+            $output['message'] = 'Error: An item with this pelak_amval already exists';
+            return $output;
+        }
+    }
+    
     // Insert query
     $sql = "INSERT INTO prc_db_amin_amval (grouh, onvan_amval, tedad, type, moshakhase, makan, sherkat, sanad, tarikh, pelak_amval, vasziyat_estefade, tahvil_girande) 
             VALUES ('" . addslashes($grouh) . "', 
@@ -36,10 +65,13 @@ function save_to_db($inputData) {
                     '" . addslashes($tahvil_girande) . "')";
     $result = executeQuery($sql);
     
+    // Debug: Log the result of the insert query
+    error_log("Insert query result: " . print_r($result, true));
+    
     if ($result) {
         $output['message'] = 'Data saved successfully';
     } else {
-        $output['message'] = 'Failed to save data';
+        $output['message'] = 'Error: Failed to save data';
     }
     
     return $output;
@@ -48,8 +80,8 @@ function save_to_db($inputData) {
 function update_record($inputData) {
     $output = [];
     
-    // Extract input data with defaults
-    $id = isset($inputData['id']) ? $inputData['id'] : null;
+    // Extract input data with defaults (including id for WHERE clause)
+    $id = isset($inputData['id']) ? $inputData['id'] : '';
     $grouh = isset($inputData['grouh']) ? $inputData['grouh'] : '';
     $onvan_amval = isset($inputData['onvan_amval']) ? $inputData['onvan_amval'] : '';
     $tedad = isset($inputData['tedad']) ? $inputData['tedad'] : '';
@@ -62,11 +94,6 @@ function update_record($inputData) {
     $pelak_amval = isset($inputData['pelak_amval']) ? $inputData['pelak_amval'] : '';
     $vasziyat_estefade = isset($inputData['vasziyat_estefade']) ? $inputData['vasziyat_estefade'] : '';
     $tahvil_girande = isset($inputData['tahvil_girande']) ? $inputData['tahvil_girande'] : '';
-    
-    if (!$id) {
-        $output['message'] = 'No ID provided for update';
-        return $output;
-    }
     
     // Update query
     $sql = "UPDATE prc_db_amin_amval SET 
