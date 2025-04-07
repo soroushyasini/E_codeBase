@@ -44,7 +44,7 @@ function save_to_db($inputData) {
         }
         
         if ($count > 0) {
-            $output['message'] = 'Error: An item with this pelak_amval already exists';
+            $output['message'] = 'این پلاک اموال قبلاً ثبت شده است';
             return $output;
         }
     }
@@ -69,9 +69,9 @@ function save_to_db($inputData) {
     error_log("Insert query result: " . print_r($result, true));
     
     if ($result) {
-        $output['message'] = 'Data saved successfully';
+        $output['message'] = 'با موفقیت ثبت شد';
     } else {
-        $output['message'] = 'Error: Failed to save data';
+        $output['message'] = 'خطا ! ثبت انجام نشد';
     }
     
     return $output;
@@ -113,9 +113,9 @@ function update_record($inputData) {
     $result = executeQuery($sql);
     
     if ($result) {
-        $output['message'] = 'Record updated successfully';
+        $output['message'] = 'ریکورد با موفقیت به روز رسانی شد';
     } else {
-        $output['message'] = 'Failed to update record';
+        $output['message'] = 'خطا ! ریکورد به روز نشد ';
     }
     
     return $output;

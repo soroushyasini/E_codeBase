@@ -3,42 +3,19 @@ var host = PMDynaform.getHostName();
 var ws = PMDynaform.getWorkspaceName();
 var token = PMDynaform.getAccessToken(); 
 var app_uid = PMDynaform.getProjectKeys().caseUID;
-var trig_uid = "77124592967cd594ad6add1031134547"; // Your trigger UID
-
+var trig_uid = "77503568067f1098e6855e5076345161"; // Your trigger UID
+$("#type").setOnchange(function(newVal, oldVal) {
+  if (newVal == "اموالی") { 
+    // Show the "tamin_konnande" field if the selected value is "تامین کنندگان"
+    $("#pelak_amval").show();
+  } else {
+    // Hide the "tamin_konnande" field for any other value
+    $("#pelak_amval").hide();
+  }});
 $('#record_id').hide();
+$("#pelak_amval").hide();
 hideArrow();
 appendAjaxLoading();
-
-// Function to update XCRUD column titles
-// function updateXcrudTitles() {
-//     if ($('.xcrud-list').length) {
-//         var columnTitles = [
-
-//             'ID',               // id
-//             'گروه کالا',       // grouh
-//             'عنوان اموال',     // onvan_amval
-//             'تعداد',           // tedad
-//             'نوع',             // type
-//             'مشخصه',           // moshakhase
-//             'مکان',            // makan
-//             'شرکت',            // sherkat
-//             'سند',             // sanad
-//             'تاریخ تحویل',     // n2_date(tarikh)
-//             'پلاک اموال',      // pelak_amval
-//             'وضعیت استفاده',  // vasziyat_estefade
-//             'تحویل گیرنده',   // tahvil_girande
-//             ''                  // actions column
-//         ];
-
-//         $('.xcrud-list thead tr.xcrud-th th').each(function(index) {
-//             if (index < columnTitles.length) {
-//                 $(this).text(columnTitles[index]);
-//             }
-//         });
-
-//         console.log("XCRUD column titles updated to Persian");
-//     }
-// }
 
 function search_table() {
     // Collect values from web controls
@@ -199,9 +176,11 @@ $("#create_record").find("button").click(function() {
         data: temp,
         beforeSend: function(xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); }
     }).done(function(msg) {
-        console.log("Create response:", msg);
+    console.log("Create response:", msg);
+    if (msg.message === 'این پلاک اموال قبلاً ثبت شده است' || (msg.message && msg.message.startsWith('Error:'))) {
+        showMessage(msg.message, 'error', 5000, 'خطا');
+    } else {
         showMessage(msg.message, 'success', 5000, 'موفقیت');
-        $('#n2_ajax_loading').fadeOut();
         $("#record_id").setValue('');
         $("#grouh").setValue('');
         $("#onvan_amval").setValue('');
@@ -217,13 +196,22 @@ $("#create_record").find("button").click(function() {
         $("#tahvil_girande").setValue('');
         if (typeof Xcrud !== 'undefined' && typeof Xcrud.reload === 'function') {
             Xcrud.reload();
-           // setTimeout(updateXcrudTitles, 500); // Fallback: Update titles after reload
         }
-    }).fail(function(xhr, status, error) {
-        console.log("Create Error:", xhr.responseText, status, error);
-        showMessage('Error: ' + xhr.responseText, 'error', 5000, 'خطا');
-        $('#n2_ajax_loading').fadeOut();
-    });
+    }
+    $('#n2_ajax_loading').fadeOut();
+})
+.fail(function(xhr, status, error) {
+    console.log("Create Error:", xhr.responseText, status, error);
+    let errorMsg = 'Unknown error occurred';
+    try {
+        const response = JSON.parse(xhr.responseText);
+        errorMsg = response.message || errorMsg;
+    } catch (e) {
+        errorMsg = xhr.responseText || errorMsg;
+    }
+    showMessage(errorMsg, 'error', 5000, 'خطا');
+    $('#n2_ajax_loading').fadeOut();
+});
 });
 
 // Update existing record
