@@ -16,11 +16,20 @@ $zemanat_nameh = @@zemanat_nameh;
 $zemanat_nameh_2 = @@zemanat_nameh_2;
 $vahed_marbute = @@vahed_marbute;
 $tamin_konnande = @@tamin_konnande;
-
+$category = @@category;
+$subcategory = @@subcategory;
+$products = @@products;
+$haffari_area = @@haffari_area;
 
 // Modify the SQL query to ensure only the date part is stored
-$insert_query = "INSERT INTO prc_db_mozayedat_monaghesat (app_uid, akhz, alarm, dastgahejrai, deadline_asnad, deadline_pasokh, mablagh, mozayede_shomare, nahve_sherkat, name, tahvil_bar, type, zemanat_nameh, zemanat_nameh_2, vahed_marbute, tamin_konnande, insert_date) 
-VALUES ('$app_uid', '$akhz', '$alarm', '$dastgahejrai', DATE(n2_date('$gregorian_deadline_asnad')), DATE(n2_date('$gregorian_deadline_pasokh')), '$mablagh', '$mozayede_shomare', '$nahve_sherkat', '$name', '$tahvil_bar', '$type', '$zemanat_nameh', '$zemanat_nameh_2', '$vahed_marbute', '$tamin_konnande', DATE(n2_date('$gregorian_insert_date')))";
+$insert_query = "INSERT INTO prc_db_mozayedat_monaghesat (app_uid, akhz, alarm, dastgahejrai, deadline_asnad,
+   deadline_pasokh, mablagh, mozayede_shomare, nahve_sherkat,
+   name, tahvil_bar, type, zemanat_nameh, zemanat_nameh_2,
+   vahed_marbute, tamin_konnande, insert_date, category, subcategory, products, haffari_area) 
+VALUES ('$app_uid', '$akhz', '$alarm', '$dastgahejrai', DATE(n2_date('$gregorian_deadline_asnad')), DATE(n2_date('$gregorian_deadline_pasokh')), '$mablagh',
+ '$mozayede_shomare', '$nahve_sherkat', '$name', '$tahvil_bar', '$type', '$zemanat_nameh', '$zemanat_nameh_2',
+  '$vahed_marbute', '$tamin_konnande', DATE(n2_date('$gregorian_insert_date')),  '$category', '$subcategory', '$products', '$haffari_area'
+  )";
 executeQuery($insert_query); 
 
 // Clear the session variables
@@ -41,3 +50,6 @@ unset(@@zemanat_nameh_2);
 unset(@@vahed_marbute);
 unset(@@tamin_konnande);
 unset(@@insert_date);
+unset(@@subcategory);
+unset(@@products);
+unset(@@haffari_area);
