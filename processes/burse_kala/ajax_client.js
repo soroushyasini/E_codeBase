@@ -101,6 +101,7 @@ function edit_record(id, name_kala, tarikh_arzeh, baste_bandi, tolid_konnande, g
         $("#record_id").setValue(id || '');
         $("#name_kala").setValue(name_kala || '');
         $("#tarikh_arzeh").setValue(tarikh_arzeh || '');
+        $("#tarikh_arzeh").setText(tarikh_arzeh || ''); 
         $("#baste_bandi").setValue(baste_bandi || '');
         $("#tolid_konnande").setValue(tolid_konnande || '');
         $("#gheymat").setValue(gheymat || '');
@@ -114,9 +115,10 @@ function edit_record(id, name_kala, tarikh_arzeh, baste_bandi, tolid_konnande, g
         $("#arz").setValue(arz || '');
         $("#vahed").setValue(vahed || '');
         $("#tarikh_tahvil").setValue(tarikh_tahvil || '');
+        $("#tarikh_tahvil").setText(tarikh_arzeh || '');
         console.log("Web controls set - record_id:", $("#record_id").getValue(), 
                     "name_kala:", $("#name_kala").getValue(), 
-                    "tarikh_arzeh:", $("#tarikh_arzeh").getValue(),
+                    "tarikh_arzeh:", $("#tarikh_arzeh").getText(),
                     "baste_bandi:", $("#baste_bandi").getValue(),
                     "tolid_konnande:", $("#tolid_konnande").getValue(),
                     "gheymat:", $("#gheymat").getValue(),
@@ -129,7 +131,7 @@ function edit_record(id, name_kala, tarikh_arzeh, baste_bandi, tolid_konnande, g
                     "moshakhasat:", $("#moshakhasat").getValue(),
                     "arz:", $("#arz").getValue(),
                     "vahed:", $("#vahed").getValue(),
-                    "tarikh_tahvil:", $("#tarikh_tahvil").getValue()
+                    "tarikh_tahvil:", $("#tarikh_tahvil").getText()
                 );
     } catch (e) {
         console.log("Error setting values:", e);
@@ -140,7 +142,7 @@ function edit_record(id, name_kala, tarikh_arzeh, baste_bandi, tolid_konnande, g
 $("#create_record").find("button").click(function() {
     var id = $("#record_id").getValue();
     var name_kala = $("#name_kala").getValue();
-    var tarikh_arzeh = $("#tarikh_arzeh").getValue();
+    var tarikh_arzeh = $("#tarikh_arzeh").getText();
     var baste_bandi = $("#baste_bandi").getValue();
     var tolid_konnande = $("#tolid_konnande").getValue();
     var gheymat = $("#gheymat").getValue();
@@ -153,7 +155,7 @@ $("#create_record").find("button").click(function() {
     var moshakhasat = $("#moshakhasat").getValue();
     var arz = $("#arz").getValue();
     var vahed = $("#vahed").getValue();
-    var tarikh_tahvil = $("#tarikh_tahvil").getValue();
+    var tarikh_tahvil = $("#tarikh_tahvil").getText();
     var temp = { 
         id: id, 
         name_kala: name_kala, 
@@ -190,6 +192,7 @@ $("#create_record").find("button").click(function() {
             $("#record_id").setValue('');
             $("#name_kala").setValue('');
             $("#tarikh_arzeh").setValue('');
+            $("#tarikh_arzeh").setText('');
             $("#baste_bandi").setValue('');
             $("#tolid_konnande").setValue('');
             $("#gheymat").setValue('');
@@ -203,6 +206,7 @@ $("#create_record").find("button").click(function() {
             $("#arz").setValue('');
             $("#vahed").setValue('');
             $("#tarikh_tahvil").setValue('');
+            $("#tarikh_tahvil").setText('');
             if (typeof Xcrud !== 'undefined' && typeof Xcrud.reload === 'function') {
                 Xcrud.reload();
             }
@@ -230,7 +234,7 @@ $("#button_update").find("button").click(function() {
         return;
     }
     var name_kala = $("#name_kala").getValue();
-    var tarikh_arzeh = $("#tarikh_arzeh").getValue();
+    var tarikh_arzeh = $("#tarikh_arzeh").getText();
     var baste_bandi = $("#baste_bandi").getValue();
     var tolid_konnande = $("#tolid_konnande").getValue();
     var gheymat = $("#gheymat").getValue();
@@ -243,7 +247,7 @@ $("#button_update").find("button").click(function() {
     var moshakhasat = $("#moshakhasat").getValue();
     var arz = $("#arz").getValue();
     var vahed = $("#vahed").getValue();
-    var tarikh_tahvil = $("#tarikh_tahvil").getValue();
+    var tarikh_tahvil = $("#tarikh_tahvil").getText();
     var temp = { 
         name_kala: name_kala, 
         tarikh_arzeh: tarikh_arzeh, 
@@ -277,6 +281,7 @@ $("#button_update").find("button").click(function() {
         $('#n2_ajax_loading').fadeOut();
         $("#record_id").setValue('');
         $("#name_kala").setValue('');
+        $("#tarikh_arzeh").setText('');
         $("#tarikh_arzeh").setValue('');
         $("#baste_bandi").setValue('');
         $("#tolid_konnande").setValue('');
@@ -291,6 +296,8 @@ $("#button_update").find("button").click(function() {
         $("#arz").setValue('');
         $("#vahed").setValue('');
         $("#tarikh_tahvil").setValue('');
+        $("#tarikh_tahvil").setValue('');
+
         if (typeof Xcrud !== 'undefined' && typeof Xcrud.reload === 'function') {
             Xcrud.reload();
         }
