@@ -78,7 +78,7 @@
                     borderColor: 'rgba(0, 102, 204, 1)',
                     backgroundColor: 'rgba(0, 102, 204, 0.60)',
                     borderWidth: 1,
-                    font: { family: 'B Nazanin', size: 14, weight: 'bold' },
+                    font: { family: 'B Nazanin', size: 18, weight: 'bold' },
                     stack: 'stack1'
                 },
                 {
@@ -86,7 +86,7 @@
                     data: outgoingData,
                     borderColor: 'rgba(205, 92, 92, 1)',
                     backgroundColor: 'rgba(205, 92, 92, 0.60)',
-                    font: { family: 'B Nazanin', size: 14, weight: 'bold' },
+                    font: { family: 'B Nazanin', size: 18, weight: 'bold' },
                     borderWidth: 1,
                     stack: 'stack1'
                 }
@@ -110,28 +110,32 @@
                             title: {
                                 display: true,
                                 text: 'تعداد نامه',
-                                font: { family: 'B Nazanin', size: 14, weight: 'bold' }
+                                font: { family: 'B Nazanin', size: 18, weight: 'bold' }
                             },
                              
-                            ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' } } 
+                            ticks: { font: { family: 'B Nazanin', size: 16, weight: 'bold' } } 
                         },
                         x: {
                             stacked: true,
                             // title: {
                             //     display: true,
                             //   text: 'دبیرخانه',
-                            //   font: { family: 'B Nazanin', size: 14, weight: 'bold' }
+                            //   font: { family: 'B Nazanin', size: 18, weight: 'bold' }
                             // },
-                            ticks: { font: { family: 'B Nazanin', size: 14, weight: 'bold' } }  // Enable stacking on x-axis
+                            ticks: { font: { family: 'B Nazanin', size: 18, weight: 'bold' } }  // Enable stacking on x-axis
                         }
                     },
                     plugins: {
                         legend: {
                             position: 'top',
-                            font: { family: 'B Nazanin', size: 14, weight: 'bold' },
-                            bodyFont: { family: 'B Nazanin', size: 12, weight: 'bold' },
-                            titleFont: { family: 'B Nazanin', size: 14, weight: 'bold' }// Display legend at the top
+                            font: { family: 'B Nazanin', size: 18, weight: 'bold' },
+                            bodyFont: { family: 'B Nazanin', size: 16, weight: 'bold' },
+                            titleFont: { family: 'B Nazanin', size: 18, weight: 'bold' },
+                            labels: {
+                                font: { family: 'B Nazanin', size: 14, weight: 'bold' }
+                            }// Display legend at the top
                         }
+
                     }
                 }
             });

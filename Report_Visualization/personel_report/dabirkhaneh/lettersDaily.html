@@ -63,7 +63,7 @@
                             backgroundColor: 'rgba(205, 92, 92, 0.15)',
                             borderWidth: 2,
                             fill: true,
-                            font: { family: 'B Nazanin', size: 14, weight: 'bold' },
+                            font: { family: 'B Nazanin', size: 18, weight: 'bold' },
                             tension: 0.4,
                             pointRadius: 0
                         },
@@ -72,7 +72,7 @@
                             data: combinedData,
                             borderColor: 'rgba(255, 152, 0, 1)',
                             backgroundColor: 'rgba(255, 152, 0, 0.4)',
-                            font: { family: 'B Nazanin', size: 14, weight: 'bold' },
+                            font: { family: 'B Nazanin', size: 18, weight: 'bold' },
                             borderWidth: 2.5,
                             fill: true,
                             tension: 0.4,
@@ -87,9 +87,9 @@
                             title: {
                                 display: true,
                                 text: 'تعداد نامه',
-                                font: { family: 'B Nazanin', size: 14, weight: 'bold' }
+                                font: { family: 'B Nazanin', size: 18, weight: 'bold' }
                             },
-                            ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' } }
+                            ticks: { font: { family: 'B Nazanin', size: 16, weight: 'bold' } }
                         },
                         x: {
                             title: {
@@ -97,7 +97,7 @@
                               //  text: 'تاریخ',
                               //  font: { family: 'B Nazanin', size: 14, weight: 'bold' }
                             },
-                            ticks: { font: { family: 'B Nazanin', size: 12, weight: 'bold' } }
+                            ticks: { font: { family: 'B Nazanin', size: 16, weight: 'bold' } }
                         }
                     },
                     plugins: {
@@ -105,10 +105,19 @@
                             enabled: true,
                             mode: 'index',
                             intersect: false,
-                            bodyFont: { family: 'B Nazanin', size: 12, weight: 'bold' },
-                            titleFont: { family: 'B Nazanin', size: 14, weight: 'bold' }
-                        }
+                            font: { family: 'B Nazanin', size: 18, weight: 'bold' },
+                            bodyFont: { family: 'B Nazanin', size: 16, weight: 'bold' },
+                            titleFont: { family: 'B Nazanin', size: 18, weight: 'bold' }
+                        },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: { family: 'B Nazanin', size: 14, weight: 'bold' }
+                            }
+                        
+                        
                     }
+                }
                 }
             });
 
