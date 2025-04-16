@@ -6,7 +6,12 @@
     <title>Chart.js Example</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
-      <style>
+    <style>
+        .chart-container {
+            max-width: 1000px;
+            width: 90%;
+            margin: 0 auto;
+        }
         canvas {
             width: 100% !important;
             height: auto !important;
@@ -14,9 +19,7 @@
     </style>
 </head>
 <body>
-
-
-      <!-- Second Chart -->
+    <!-- Second Chart -->
     <div class="chart-container">
         <canvas id="dabirkhane_letters_2"></canvas>
     </div>
@@ -123,7 +126,7 @@
             }
         }
 
-        setTimeout(() => { populateJsonData2(); }, 2000);
+        setTimeout(() => { populateJsonData2(); }, 200);
 
     </script>
 </body>

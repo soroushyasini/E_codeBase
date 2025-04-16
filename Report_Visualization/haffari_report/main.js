@@ -39,3 +39,34 @@ $("#person_month").setOnchange(updateOtherControl);
 $("#button1").find("button").click(function(){
 // This will get the existing chart instance
     populateJsonData1()});
+
+
+$(document).ready(function() {
+  // Move controls to Tab 1 (مشخصات)
+  $("#tab1").append($("#project").closest(".form-group"));
+  $("#tab1").append($("#gamaneh").closest(".form-group"));
+  $("#tab1").append($("#reload").closest(".form-group"));
+  $("#tab1").append($("#subtitle1").closest(".form-group"));
+  $("#tab1").append($("#panel2").closest(".form-group"));
+  $("#tab1").append($("#json_parse_shift").closest(".form-group"));
+
+  // Move controls to Tab 2 (وضعیت)
+  $("#tab2").append($("#person_year").closest(".form-group"));
+  $("#tab2").append($("#person_month").closest(".form-group"));
+  $("#tab2").append($("#reload_2").closest(".form-group"));
+  $("#tab2").append($("#subtitle0000000002").closest(".form-group"));
+  $("#tab2").append($("#panel3").closest(".form-group"));
+
+  // Move controls to Tab 3 (مستندات)
+  $("#tab3").append($("#image1").closest(".form-group"));
+
+
+  // Initialize Bootstrap tabs
+  $('#myTab a').on('click', function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
+
+  // Set the first tab as active
+  $('#myTab a:first').tab('show');
+});
