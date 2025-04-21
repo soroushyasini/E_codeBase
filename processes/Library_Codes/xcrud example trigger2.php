@@ -32,6 +32,3 @@ $xcrud->unset_excel(false);
 
 return $xcrud->render();
 
-
-i have a dropdown menu in processmaker and its id is akhz
-i want my dynaform shows a text field
