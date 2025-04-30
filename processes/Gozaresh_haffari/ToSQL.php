@@ -1,4 +1,3 @@
-
 <?
 // Get selected values from each Checkbox Group
 $sarparastSelected = @=sarparast_checkgroup;

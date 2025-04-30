@@ -239,6 +239,7 @@ $("#button_update").find("button").click(function() {
     $("#record_id").setValue('');
     $("#name_kala").setValue('');
     $("#tarikh_arzeh").setText('');
+    $("#tarikh_arzeh").setValue('');
     $("#moshakhasat").setValue('');
     $("#hajm_ghabel_arzeh").setValue('');
     $("#baste_bandi").setValue('');
