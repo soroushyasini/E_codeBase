@@ -1,0 +1,58 @@
+<?php
+
+class pb_automationNotification
+{
+	public function __construct()
+	{
+	}
+
+	public static function send($inputData = [])
+	{
+		//ورودی های تابع ارسال نوتیفیکیشن اتوماسیون اداری
+		/*$inputData = [
+			'type' => 'letter or action',
+			'letter_type' => 'داخلی یا خروجی یا ورودی',
+			'subject' => 'موضوع نامه',
+			'letter_number' => 'شماره نامه',
+			
+			'letter_author_id' => 'نام کاربری ثبت کننده نامه',
+			'letter_author' => 'نام و نام خانوادگی ثبت کننده نامه',
+			
+			'action_author' => 'ثبت کننده اقدام در حالت اقدام',
+			'action_comment' => 'توضیحات اقدام ثبتی در حالت اقدام',
+			'action_author_id' => 'نام کاربری ثبت کننده اقدام در حالت اقدام',
+			'to_mail' => 'ایمیل دریافت کننده نوتیفیکیشن',
+			'to_mobile' => 'شماره همراه دریافت کننده نوتیفیکیشن',
+			'to_id' => 'نام کاربری دریافت کننده نوتیفیکیشن'
+		];*/
+
+		$message = '';
+		if($inputData['type'] == 'letter'){
+			$message .= 'شماره نامه: '. $inputData['letter_number'];
+			$message .= 'موضوع نامه: '. $inputData['subject'];
+			$message .= 'شما یک نامه جدید دریافت کرده اید، لطفا آن را بررسی نمایید.';
+		}
+		else if($inputData['type'] == 'action'){
+			$message .= 'شماره نامه: '. $inputData['letter_number'];
+			$message .= 'توضیحات اقدام: '. $inputData['action_comment'];
+			$message .= 'شما یک اقدام جدید دریافت کرده اید، لطفا آن را بررسی نمایید.';
+		}
+
+		//نمونه کد زیر جهت اتصاص به وب سرویس پنل پیامکی است که باید با مشخصات پنل پیامکی خود و نحوه فراخوانی وب سرویس آن جایگزین کنید
+		/*
+		ini_set('allow_url_fopen', 1); 
+		libxml_disable_entity_loader(false);
+		$client = new SoapClient("http://api.payamak-panel.com/post/Send.asmx?wsdl");
+
+		$parameters = [];
+		$parameters['username'] = 'YOUR_SMS_PANEL_USERNAME';
+		$parameters['password'] = 'YOUR_SMS_PANEL_PASSWORD';
+		$parameters['from'] = "YOUR_SMS_PANEL_NUMBER";
+		$parameters['to'] = $inputData['to_mobile'];
+		$parameters['text'] =  $message;
+
+		$parameters['isflash'] = false;
+		$result = $client->SendSimpleSMS2($parameters);
+		*/
+	}
+}
