@@ -8,14 +8,13 @@ hideArrow();
 appendAjaxLoading();
 $("#record_id").hide();
 $("#search_records").hide();
-function edit_record(record_id, type, akhz, name, mozayede_shomare, mablagh, dastgahejrai, nahve_sherkat, deadline_asnad, tahvil_bar, deadline_pasokh, alarm, zemanat_nameh, zemanat_nameh_2,insert_date , vahed_marbute, tamin_konnande, date_created, left_days, category, subcategory, products, haffari_area, file, file_name, file_nahaee, file_name_nahaee, vaze_tamdid, vaze_sherkat) {
-  console.log("Editing record:", { record_id, type, akhz, name, mozayede_shomare, mablagh, dastgahejrai, nahve_sherkat, deadline_asnad, tahvil_bar, deadline_pasokh, alarm, zemanat_nameh, zemanat_nameh_2, insert_date, vahed_marbute, tamin_konnande, date_created, left_days, category, subcategory, products, haffari_area, file, file_name, file_nahaee, file_name_nahaee, vaze_tamdid, vaze_sherkat });
+function edit_record(record_id, type, akhz, name, mozayede_shomare, mablagh, dastgahejrai, nahve_sherkat, deadline_asnad, tahvil_bar, deadline_pasokh, alarm, zemanat_nameh, zemanat_nameh_2,insert_date , vahed_marbute, tamin_konnande, category, subcategory, products, haffari_area, file, file_name, file_nahaee, file_name_nahaee, vaze_tamdid, vaze_sherkat) {
+  console.log("Editing record:", { record_id, type, akhz, name, mozayede_shomare, mablagh, dastgahejrai, nahve_sherkat, deadline_asnad, tahvil_bar, deadline_pasokh, alarm, zemanat_nameh, zemanat_nameh_2, insert_date, vahed_marbute, tamin_konnande, category, subcategory, products, haffari_area, file, file_name, file_nahaee, file_name_nahaee, vaze_tamdid, vaze_sherkat });
   try {
     deadline_asnad = (deadline_asnad === "0000-00-00 00:00:00") ? "" : deadline_asnad;
     tahvil_bar = (tahvil_bar === "0000-00-00 00:00:00") ? "" : tahvil_bar;
     deadline_pasokh = (deadline_pasokh === "0000-00-00 00:00:00") ? "" : deadline_pasokh;
     insert_date = (insert_date === "0000-00-00 00:00:00") ? "" : insert_date;
-    date_created = (date_created === "0000-00-00 00:00:00") ? "" : date_created;
     $("#record_id").setValue(record_id || '');
     $("#type").setValue(type || '');
     $("#akhz").setValue(akhz || '');
