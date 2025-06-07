@@ -1,127 +1,375 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Drill Hours Table</title>
+  <title>Drilling Progress and Resource Table</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=BNazanin&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    body { 
+      font-family: 'B Nazanin', 'Vazir', sans-serif; 
+      text-align: center; 
+      margin: 20px;
+    }
+    
+    /* Chart Styling */
+    .chart-container {
+      position: relative;
+      width: 80%;
+      height: 440px;
+      margin: 20px auto;
+    }
+    .legend-container {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      margin: 10px auto;
+    }
+    .legend-left {
+      display: flex;
+      gap: 65px;
+      margin-left: 15px;
+    }
+    .legend-right {
+      display: flex;
+      margin-right: 15px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .legend-item span {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      margin-left: 5px;
+    }
+
+    /* Table Styling */
     table {
+      width: 80%;
       border-collapse: collapse;
-      width: 100%;
-      font-family: Arial, sans-serif;
-      margin-top: 20px;
-      border: 2px solid black;
+      direction: ltr;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 20px auto;
+      border-radius: 8px;
+      overflow: hidden;
     }
-    th, td {
-      border: 1px solid black;
-      padding: 5px;
-      text-align: center;
-      min-width: 50px;
-    }
-    .date-header {
-      background-color:#eff8ef ;
-      color: #5b5c5b;
-      font-weight: bold;
-      text-align: center;
-      border-bottom: 2px solid black;
-    }
-    .person-header {
-      background-color: #4CAF50;
+    tr.header {
+      background-color: #4a90e2;
       color: white;
+      font-size: 1.2em;
       font-weight: bold;
     }
-    .signature {
-      text-align: right;
-      font-style: italic;
-      margin-top: 20px;
-      border-top: 2px solid black;
-      padding-top: 10px;
+    tr.data-row {
+      background-color: #ffffff;
     }
-    textarea {
-      width: 100%;
-      height: 200px;
-      margin-bottom: 10px;
+    td, th {
+      padding: 12px 15px;
+      text-align: center;
+      border-bottom: 1px solid #e0e0e0;
+      border-right: 1px solid #e0e0e0;
     }
-    #errorMessage {
-      color: red;
-      margin-top: 10px;
+    th:last-child, td:last-child {
+      border-right: none;
+    }
+    td:first-child {
+      text-align: center;
+    }
+    td:nth-child(n+2) {
+      text-align: center;
+    }
+    tr.data-row:hover {
+      background-color: #e6f0fa;
+      transition: background-color 0.3s ease;
+    }
+    @media (max-width: 600px) {
+      table, th, td {
+        font-size: 0.9em;
+        padding: 8px;
+      }
+      .chart-container {
+        width: 95%;
+        height: 300px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- ProcessMaker web control; ensure ID matches your DynaForm field -->
- 
-  <div id="tableContainer"></div>
-  <div id="errorMessage"></div>
+  <div class="legend-container">
+    <div class="legend-left" id="legend-left"></div>
+    <div class="legend-right" id="legend-right"></div>
+  </div>
+  <div class="chart-container">
+    <canvas id="drillChart"></canvas>
+  </div>
+  <div id="resourceDrillTable"></div>
 
   <script>
-$(document).ready(function() {
-  // Bind click event to reload_2 button
-  $("#reload_2").click(function() {
-    loadDataFromWebControl_personel();
-  });
-});
-
-function loadDataFromWebControl_personel() {
-  try {
-    // Retrieve JSON from ProcessMaker web control using .getValue()
-    var jsonString = $("#json_drill_person_day").getValue();
-    if (!jsonString) {
-      throw new Error("No data found in json_drill_person_day");
+    // Chart Functions
+    function loadDataFromWebControl() {
+      try {
+        const jsonString = $("#textVar002").getValue();
+        const jsonData = JSON.parse(jsonString);
+        drawChart(jsonData);
+      } catch (error) {
+        console.error('Error loading chart data:', error);
+        const existingChart = Chart.getChart('drillChart');
+        if (existingChart) {
+          existingChart.destroy();
+        }
+      }
     }
-    var jsonData = JSON.parse(jsonString);
-    drawTable(jsonData);
-    $("#errorMessage").html("");
-  } catch (error) {
-    console.error('Error loading data:', error);
-    $("#tableContainer").html("");
-    $("#errorMessage").html('<p>لطفا ابتدا گمانه و سپس سال و ماه مورد نظر را انتخاب کنید</p>');
-  }
-}
 
-function drawTable(jsonData) {
-  // Collect unique persons across all days
-  var allPersons = {};
-  jsonData.forEach(function(day) {
-    day.persons.forEach(function(person) {
-      allPersons[person.person] = true;
+    function drawChart(jsonData) {
+      if (!jsonData || jsonData.length === 0) {
+        console.error("No chart data available!");
+        return;
+      }
+      const processedData = processDrillingData(jsonData);
+      createDrillChart(processedData);
+    }
+
+    function processDrillingData(data) {
+      const processed = data.map(entry => ({
+        ...entry,
+        depth: entry["عمق پایان"] - entry["عمق شروع"],
+        jalaaliDate: entry.تاریخ
+      }));
+      const dateMap = new Map();
+      processed.forEach(entry => {
+        const key = entry.jalaaliDate;
+        if (!dateMap.has(key)) {
+          dateMap.set(key, { DAY: 0, NIGHT: 0 });
+        }
+        if (entry.شیفت === "DAY") {
+          dateMap.get(key).DAY += entry.depth;
+        } else if (entry.شیفت === "NIGHT") {
+          dateMap.get(key).NIGHT += entry.depth;
+        }
+      });
+
+      const dates = Array.from(dateMap.keys()).sort();
+      const dayDaily = [];
+      const nightDaily = [];
+      const dailyTotals = [];
+      dates.forEach(date => {
+        const dayAmount = dateMap.get(date).DAY;
+        const nightAmount = dateMap.get(date).NIGHT;
+        dayDaily.push(dayAmount);
+        nightDaily.push(nightAmount);
+        dailyTotals.push(dayAmount + nightAmount);
+      });
+
+      let runningDay = 0;
+      let runningNight = 0;
+      const dayData = [];
+      const nightData = [];
+
+      for (let i = 0; i < dates.length; i++) {
+        runningDay += dayDaily[i];
+        runningNight += nightDaily[i];
+        dayData.push(-runningDay);
+        nightData.push(-runningNight);
+      }
+
+      return { dates, dayData, nightData, dailyTotals };
+    }
+
+    function createDrillChart(data) {
+      const ctx = document.getElementById('drillChart').getContext('2d');
+      const gamaneh_name = $("#gamaneh").getValue();
+      const existingChart = Chart.getChart('drillChart');
+
+      if (existingChart) {
+        existingChart.destroy();
+      }
+
+      window.drillChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.dates,
+          datasets: [
+            {
+              label: 'روز',
+              data: data.dayData,
+              backgroundColor: '#B56A34',
+              stack: 'drillingStack',
+              order: 2
+            },
+            {
+              label: 'شب',
+              data: data.nightData,
+              backgroundColor: '#347FB5',
+              stack: 'drillingStack',
+              order: 2
+            },
+            {
+              label: 'حفاری روزانه',
+              type: 'line',
+              data: data.dailyTotals,
+              borderColor: 'rgba(255, 0, 0, 1)',
+              backgroundColor: 'rgba(255, 0, 0, 0.2)',
+              borderWidth: 2,
+              fill: true,
+              yAxisID: 'y2',
+              tension: 0.1,
+              order: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          barPercentage: 0.99,
+          categoryPercentage: 0.99,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              stacked: true,
+              ticks: {
+                autoSkip: false,
+                maxRotation: 45,
+                minRotation: 45,
+                font: { family: 'B Nazanin', size: 15, weight: 'bold' }
+              }
+            },
+            y: {
+              stacked: true,
+              ticks: {
+                font: { family: 'B Nazanin', size: 12, weight: 'bold' },
+                callback: value => Math.abs(value)
+              },
+              title: {
+                display: true,
+                font: { family: 'B Nazanin', size: 12, weight: 'bold' },
+                text: 'عمق حفاری (تجمعی)'
+              }
+            },
+            y2: {
+              position: 'right',
+              ticks: {
+                beginAtZero: true,
+                font: { family: 'B Nazanin', size: 12, weight: 'bold' }
+              },
+              title: {
+                display: true,
+                text: 'حفاری روزانه',
+                font: { family: 'B Nazanin', size: 14, weight: 'bold' }
+              },
+              grid: {
+                drawOnChartArea: false
+              }
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              font: { family: 'B Nazanin', size: 18, weight: 'bold' },
+              text: `میزان پیشرفت روزانه حفاری گمانه ${gamaneh_name}`
+            },
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+
+      const chart = window.drillChart;
+      const leftLegend = document.getElementById('legend-left');
+      const rightLegend = document.getElementById('legend-right');
+      leftLegend.innerHTML = '';
+      rightLegend.innerHTML = '';
+
+      chart.data.datasets.forEach((dataset, i) => {
+        const legendItem = document.createElement('div');
+        legendItem.className = 'legend-item';
+        const colorBox = document.createElement('span');
+        colorBox.style.backgroundColor = dataset.backgroundColor;
+        const text = document.createTextNode(dataset.label);
+        legendItem.appendChild(colorBox);
+        legendItem.appendChild(text);
+
+        legendItem.onclick = () => {
+          const meta = chart.getDatasetMeta(i);
+          meta.hidden = meta.hidden === null ? true : null;
+          chart.update();
+        };
+
+        if (dataset.label === 'حفاری روزانه') {
+          leftLegend.appendChild(legendItem);
+        } else {
+          rightLegend.appendChild(legendItem);
+        }
+      });
+    }
+
+    // Table Functions
+    function loadFromWebControl() {
+      try {
+        const jsonString = $("#ratio_json").getValue();
+        console.log('Raw JSON string:', jsonString);
+
+        if (!jsonString || typeof jsonString !== 'string') {
+          throw new Error('JSON string is empty or not a string');
+        }
+
+        const trimmedJsonString = jsonString.trim();
+        if (!trimmedJsonString.startsWith('[') || !trimmedJsonString.endsWith(']')) {
+          throw new Error('JSON string does not appear to be a valid array');
+        }
+
+        const jsonData = JSON.parse(trimmedJsonString);
+
+        if (!Array.isArray(jsonData)) {
+          throw new Error('Parsed JSON is not an array');
+        }
+
+        let tableHtml = '<table>';
+        tableHtml += '<tr class="header"><th>نام گمانه</th><th>سوخت مصرفی</th><th>عمق نهایی</th><th>آب مصرفی</th><th>مصرف سوخت به ازای هر متر</th><th>مصرف آب به ازای هر متر</th></tr>';
+
+        jsonData.forEach(function(entry) {
+          if (!entry.site || entry.fuel === undefined || entry.drill === undefined || 
+              entry.water === undefined || entry.fl_ratio === undefined || entry.wtr_ratio === undefined) {
+            throw new Error('Invalid data structure');
+          }
+
+          // Round and format numeric values
+          const roundedDrill = Number(entry.drill).toFixed(2);
+          const formattedFuel = Number(entry.fuel).toLocaleString('en-US');
+          const formattedDrill = Number(roundedDrill).toLocaleString('en-US');
+          const formattedWater = Number(entry.water).toLocaleString('en-US');
+          const formattedFlRatio = Number(entry.fl_ratio).toFixed(1).toLocaleString('en-US');
+          const formattedWtrRatio = Number(entry.wtr_ratio).toFixed(1).toLocaleString('en-US');
+
+          tableHtml += '<tr class="data-row">';
+          tableHtml += '<td>' + entry.site + '</td>';
+          tableHtml += '<td>' + formattedFuel + '</td>';
+          tableHtml += '<td>' + formattedDrill + '</td>';
+          tableHtml += '<td>' + formattedWater + '</td>';
+          tableHtml += '<td>' + formattedFlRatio + '</td>';
+          tableHtml += '<td>' + formattedWtrRatio + '</td>';
+          tableHtml += '</tr>';
+        });
+
+        tableHtml += '</table>';
+        $("#resourceDrillTable").html(tableHtml);
+      } catch (error) {
+        console.error('Error loading table data:', error.message);
+        $("#resourceDrillTable").html('<p style="color: red;">Error: ' + error.message + '</p>');
+      }
+    }
+    $(document).ready(function() {
+      setTimeout(() => {
+        loadDataFromWebControl();
+        loadFromWebControl();
+      }, 100);
     });
-  });
-  var personList = Object.keys(allPersons);
+    // Load both chart and table data on page load
 
-  // Start table HTML with Gamane_name as a header
-  var tableHtml = '<table><thead>';
-  
-  // Add Gamane_name as a header row (assuming it's the same for all days; if it varies, we'll adjust below)
-  var gamaneName = jsonData.length > 0 ? jsonData[0].Gamane_name : 'Unknown';
-  tableHtml += `<tr><th colspan="${personList.length * 2 + 1}">Gamane Name: ${gamaneName}</th></tr>`;
-
-  // Person headers
-  tableHtml += '<tr><th>Form Date</th>';
-  personList.forEach(function(person) {
-    tableHtml += `<th class="person-header" colspan="2">${person}</th>`;
-  });
-  tableHtml += '</tr><tr><th></th>';
-  personList.forEach(function() {
-    tableHtml += '<th>روز</th><th>شب</th>';
-  });
-  tableHtml += '</tr></thead><tbody>';
-
-  // Add rows for each form_date
-  jsonData.forEach(function(day) {
-    tableHtml += '<tr class="date-header"><td>' + day.form_date + '</td>';
-    personList.forEach(function(person) {
-      var personData = day.persons.find(function(p) { return p.person === person; });
-      var dayValue = personData ? (personData.drill_day > 0 ? `${personData.drill_day}` : '-') : '-';
-      var nightValue = personData ? (personData.drill_night > 0 ? `${personData.drill_night}` : '-') : '-';
-      tableHtml += `<td>${dayValue}</td><td>${nightValue}</td>`;
-    });
-    tableHtml += '</tr>';
-  });
-
-  tableHtml += '</tbody></table><div class="signature">امضا: __________</div>';
-
-  $("#tableContainer").html(tableHtml);
-}
   </script>
 </body>
 </html>
+
