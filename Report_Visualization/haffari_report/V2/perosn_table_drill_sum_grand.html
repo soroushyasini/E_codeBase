@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drill Hours Table</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-family: Arial, sans-serif;
+      margin-top: 20px;
+      border: 2px solid black;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 5px;
+      text-align: center;
+      min-width: 50px;
+    }
+    .date-header {
+      background-color: #2196F3;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      border-bottom: 2px solid black;
+    }
+    .person-header {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+    .signature {
+      text-align: right;
+      font-style: italic;
+      margin-top: 20px;
+      border-top: 2px solid black;
+      padding-top: 10px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      margin-bottom: 10px;
+    }
+    #errorMessage {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="tableContainer"></div>
+  <div id="errorMessage"></div>
+  <script>
+    $(document).ready(function() {
+      $("#reload_2").click(function() {
+        loadDataFromWebControl_personel();
+      });
+    });
+    
+function loadDataFromWebControl_personel() {
+  try {
+    // Retrieve JSON from ProcessMaker web control using .getValue()
+    var jsonString = $("#json_drill_person_day").getValue();
+    if (!jsonString) {
+      throw new Error("No data found in json_drill_person_day");
+    }
+    var jsonData = JSON.parse(jsonString);
+    drawTable(jsonData);
+    $("#errorMessage").html("");
+  } catch (error) {
+    console.error('Error loading data:', error);
+    $("#tableContainer").html("");
+    $("#errorMessage").html('<p>لطفا ابتدا گمانه و سپس سال و ماه مورد نظر را انتخاب کنید</p>');
+  }
+}
+
+function drawTable(jsonData) {
+  // Collect unique persons across all days
+  var allPersons = {};
+  jsonData.forEach(function(day) {
+    day.persons.forEach(function(person) {
+      allPersons[person.person] = true;
+    });
+  });
+  var personList = Object.keys(allPersons);
+
+  // Calculate totals for each person (day and night)
+  var totals = {};
+  personList.forEach(function(person) {
+    totals[person] = { drill_day: 0, drill_night: 0, grand_total: 0 };
+  });
+  jsonData.forEach(function(day) {
+    day.persons.forEach(function(person) {
+      if (totals[person.person]) {
+        totals[person.person].drill_day += person.drill_day || 0;
+        totals[person.person].drill_night += person.drill_night || 0;
+        totals[person.person].grand_total += (person.drill_day || 0) + (person.drill_night || 0);
+      }
+    });
+  });
+
+  // Start table HTML with Gamane_name as a header
+  var tableHtml = '<table><thead>';
+  
+  // Add Gamane_name as a header row
+  var gamaneName = jsonData.length > 0 ? jsonData[0].Gamane_name : 'Unknown';
+  tableHtml += `<tr><th colspan="${personList.length * 2 + 1}">Gamane Name: ${gamaneName}</th></tr>`;
+
+  // Person headers
+  tableHtml += '<tr><th>Form Date</th>';
+  personList.forEach(function(person) {
+    tableHtml += `<th class="person-header" colspan="2">${person}</th>`;
+  });
+  tableHtml += '</tr><tr><th></th>';
+  personList.forEach(function() {
+    tableHtml += '<th>روز</th><th>شب</th>';
+  });
+  tableHtml += '</tr></thead><tbody>';
+
+  // Add rows for each form_date
+  jsonData.forEach(function(day) {
+    tableHtml += '<tr class="date-header"><td>' + day.form_date + '</td>';
+    personList.forEach(function(person) {
+      var personData = day.persons.find(function(p) { return p.person === person; });
+      var dayValue = personData ? (personData.drill_day > 0 ? `${personData.drill_day}` : '-') : '-';
+      var nightValue = personData ? (personData.drill_night > 0 ? `${personData.drill_night}` : '-') : '-';
+      tableHtml += `<td>${dayValue}</td><td>${nightValue}</td>`;
+    });
+    tableHtml += '</tr>';
+  });
+
+  // Add total row for day and night
+  tableHtml += '<tr class="total-row"><td>جمع</td>';
+  personList.forEach(function(person) {
+    var dayTotal = totals[person].drill_day > 0 ? totals[person].drill_day : '-';
+    var nightTotal = totals[person].drill_night > 0 ? totals[person].drill_night : '-';
+    tableHtml += `<td>${dayTotal}</td><td>${nightTotal}</td>`;
+  });
+  tableHtml += '</tr>';
+
+  // Add grand total row (sum of day and night totals)
+  tableHtml += '<tr class="grand-total-row"><td>جمع کل</td>';
+  personList.forEach(function(person) {
+    var grandTotal = totals[person].grand_total > 0 ? totals[person].grand_total : '-';
+    tableHtml += `<td colspan="2">${grandTotal}</td>`;
+  });
+  tableHtml += '</tr>';
+
+  tableHtml += '</tbody></table><div class="signature">امضا: __________</div>';
+
+  $("#tableContainer").html(tableHtml);
+}
+  </script>
+</body>
+</html>
